@@ -1,46 +1,42 @@
 package com.diabetestracker.controller;
 
 import com.diabetestracker.model.Diabetic;
+import com.diabetestracker.model.Exercice;
 import com.diabetestracker.service.DiabeticService;
+import com.diabetestracker.service.ExerciceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/")
-public class DiabeticController {
+@RequestMapping("/exercice")
+public class ExerciceController {
 
     @Autowired
-    private DiabeticService diabeticService;
-
-    @GetMapping("/")
-    public String show(Model model){
-        model.addAttribute("diabetics", diabeticService.getAll());
-        return "index";
-    }
+    private ExerciceService exerciceService;
 
     @GetMapping("/addnew")
     public String addNewEmployee(Model model) {
-        model.addAttribute("diabetic", new Diabetic());
+        model.addAttribute("exercice", new Exercice());
         return "add";
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute("diabetic") Diabetic diabetic) {
-        diabeticService.save(diabetic);
+    public String saveEmployee(@ModelAttribute("exercice") Exercice exercice) {
+        exerciceService.save(exercice);
         return "redirect:/";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String updateForm(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("diabetic", diabeticService.getById(id));
+        model.addAttribute("exercice", exerciceService.getById(id));
         return "update";
     }
 
     @GetMapping("/deleteDiabetic/{id}")
     public String deleteThroughId(@PathVariable(value = "id") Long id) {
-        diabeticService.delete(id);
+        exerciceService.delete(id);
         return "redirect:/";
 
     }
