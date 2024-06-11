@@ -4,4 +4,6 @@ import com.diabetestracker.model.Conseil;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ConseilRepo extends JpaRepository<Conseil,Long> {
+
+
 }
