@@ -9,25 +9,25 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DiabeticService {
+public class GlycemieService {
 
     @Autowired
-    private DiabeticRepository diabeticRepository;
+    private DiabeticRepository GlycemieRepository;
 
     public List<Diabetic> getAll(){
-        return diabeticRepository.findAll();
+        return GlycemieRepository.findAll();
     }
 
     public Diabetic save(Diabetic diabetic) {
-        return diabeticRepository.save(diabetic);
+        return GlycemieRepository.save(diabetic);
     }
 
     public Diabetic getById(Long id) {
-        return diabeticRepository.findById(id).orElseThrow(DiabeticNotFoundException::new);
+        return GlycemieRepository.findById(id).orElseThrow(DiabeticNotFoundException::new);
     }
 
     public void delete(Long id) {
-        diabeticRepository.findById(id).orElseThrow(DiabeticNotFoundException::new);
-        diabeticRepository.deleteById(id);
+        GlycemieRepository.findById(id).orElseThrow(DiabeticNotFoundException::new);
+        GlycemieRepository.deleteById(id);
     }
 }
