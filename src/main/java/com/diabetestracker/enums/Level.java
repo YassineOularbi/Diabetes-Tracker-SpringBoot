@@ -5,7 +5,7 @@ public enum Level {
     HYPOGLYCEMIA(Double.NEGATIVE_INFINITY, 70, "Your glycemic level is low. Consider consuming some carbohydrates."),
     HYPERGLYCEMIA(140, Double.POSITIVE_INFINITY, "Your glycemic level is high. Consider consulting your healthcare provider.");
 
-    private final double minLevel;""
+    private final double minLevel;
     private final double maxLevel;
     private final String defaultConseil;
 
