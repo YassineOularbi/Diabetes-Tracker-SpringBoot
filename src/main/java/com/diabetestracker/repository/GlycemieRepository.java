@@ -13,4 +13,6 @@ public interface GlycemieRepository extends JpaRepository<Glycemie, Long> {
     List<Glycemie> findHourlyGlycemiaData(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     List<Glycemie> findAllByDate(LocalDateTime date);
+
 }
+

@@ -1,10 +1,10 @@
 package com.diabetestracker.controller;
 
 import com.diabetestracker.model.Glycemie;
-//import com.diabetestracker.model.Conseil;
+import com.diabetestracker.model.Conseil;
 import com.diabetestracker.enums.Level;
 import com.diabetestracker.service.GlycemieService;
-//import com.diabetestracker.service.ConseilService;
+import com.diabetestracker.service.ConseilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,15 +13,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/glycemie")
 public class GlycemiaController {
+
     @Autowired
     private GlycemieService glycemieService;
 
-    //@Autowired
-    //private ConseilService conseilService;
+    @Autowired
+    private ConseilService conseilService;
 
     @GetMapping
     public String listGlycemies(ModelMap modelMap) {
@@ -44,12 +46,16 @@ public class GlycemiaController {
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
         Level level = Level.fromValue(value);
         Glycemie glycemie = new Glycemie(value, dateTime, level, unit);
-        glycemieService.saveGlycemie(glycemie);
-//        Conseil conseil = conseilService.getConseilByLevel(level);
-//        model.addAttribute("conseil", conseil);
-        return "redirect:/glycemie";
-    }
 
+        glycemieService.saveGlycemie(glycemie);
+        Optional<Conseil> conseil = conseilService.getConseilByLevel(level);
+        if (conseil.isPresent()) {
+            model.addAttribute("conseil", conseil.get());
+        } else {
+            model.addAttribute("conseil", new Conseil(level, level.getDefaultConseil()));
+        }
+        return "viewConseil";
+    }
 
     @GetMapping("/delete/{id}")
     public String deleteGlycemie(@PathVariable Long id) {
