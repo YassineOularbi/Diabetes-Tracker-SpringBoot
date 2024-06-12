@@ -36,4 +36,3 @@ public enum Level {
         throw new IllegalArgumentException("Invalid glycemic level: " + value);
     }
 }
-
