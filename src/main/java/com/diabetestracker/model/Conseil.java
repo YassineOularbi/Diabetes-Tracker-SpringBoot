@@ -18,6 +18,8 @@ public class Conseil {
     private String message;
 
 
-    public Conseil(Level level, String defaultConseil) {
+    public Conseil(Level level, String message) {
+        this.level = level;
+        this.message = message;
     }
 }
