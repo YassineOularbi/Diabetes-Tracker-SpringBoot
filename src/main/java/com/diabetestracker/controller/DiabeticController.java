@@ -1,7 +1,7 @@
 package com.diabetestracker.controller;
 
 import com.diabetestracker.model.Diabetic;
-import com.diabetestracker.service.GlycemieService;
+import com.diabetestracker.service.DiabeticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class DiabeticController {
 
     @Autowired
-    private GlycemieService diabeticService;
+    private DiabeticService diabeticService;
 
     @GetMapping("/")
     public String show(Model model){

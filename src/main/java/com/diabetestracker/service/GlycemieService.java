@@ -1,33 +1,35 @@
 package com.diabetestracker.service;
 
-import com.diabetestracker.exception.DiabeticNotFoundException;
-import com.diabetestracker.model.Diabetic;
-import com.diabetestracker.repository.DiabeticRepository;
+import com.diabetestracker.model.Glycemie;
+import com.diabetestracker.repository.GlycemieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class GlycemieService {
-
     @Autowired
-    private DiabeticRepository GlycemieRepository;
+    private GlycemieRepository glycemieRepository;
 
-    public List<Diabetic> getAll(){
-        return GlycemieRepository.findAll();
+    public List<Glycemie> getAllGlycemies() {
+        return glycemieRepository.findAll();
     }
 
-    public Diabetic save(Diabetic diabetic) {
-        return GlycemieRepository.save(diabetic);
+    public void saveGlycemie(Glycemie glycemie) {
+        glycemieRepository.save(glycemie);
     }
 
-    public Diabetic getById(Long id) {
-        return GlycemieRepository.findById(id).orElseThrow(DiabeticNotFoundException::new);
+    public void deleteGlycemieById(Long id) {
+        glycemieRepository.deleteById(id);
     }
 
-    public void delete(Long id) {
-        GlycemieRepository.findById(id).orElseThrow(DiabeticNotFoundException::new);
-        GlycemieRepository.deleteById(id);
+    public List<Glycemie> findHourlyGlycemiaData(LocalDateTime startDate, LocalDateTime endDate) {
+        return glycemieRepository.findHourlyGlycemiaData(startDate, endDate);
+    }
+
+    public List<Glycemie> findAllByDate(LocalDateTime date) {
+        return glycemieRepository.findAllByDate(date);
     }
 }
