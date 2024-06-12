@@ -1,35 +1,36 @@
 package com.diabetestracker.service;
 
-import com.diabetestracker.exception.DiabeticNotFoundException;
+import com.diabetestracker.enums.Level;
 import com.diabetestracker.model.Conseil;
-import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.repository.ConseilRepo;
-import com.diabetestracker.repository.DiabeticRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ConseilService {
-
     @Autowired
     private ConseilRepo conseilRepo;
 
-    public List<Conseil> getAll(){
-        return conseilRepo.findAll();
+    @Autowired
+    private GlycemieService glycemieService;
+
+    public Optional<Conseil> getConseilByLevel(Level level) {
+        return conseilRepo.findByLevel(level);
     }
 
-    public Conseil save(Conseil conseil) {
-        return conseilRepo.save(conseil);
+
+    public void saveConseil(Conseil conseil) {
+        conseilRepo.save(conseil);
     }
 
-    public Conseil getById(Long id) {
-        return conseilRepo.findById(id).orElseThrow(DiabeticNotFoundException::new);
+    public java.lang.Object getAllConseils() {
+        return null;
     }
 
-    public void delete(Long id) {
-        conseilRepo.findById(id).orElseThrow(DiabeticNotFoundException::new);
-        conseilRepo.deleteById(id);
+    public void deleteConseilById(java.lang.Long id) {
     }
 }
