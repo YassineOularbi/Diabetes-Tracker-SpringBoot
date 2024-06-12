@@ -4,6 +4,7 @@ import com.diabetestracker.enums.Level;
 import jakarta.persistence .*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 
 import java.time.LocalDateTime;
 
@@ -23,8 +24,11 @@ public class Glycemie {
     private Level level;
     private String unit;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime date;
+
+    @ManyToOne
+    private Diabetic diabetic;
 
     public Glycemie(Double value, LocalDateTime date, Level level, String unit) {
         this.value = value;
