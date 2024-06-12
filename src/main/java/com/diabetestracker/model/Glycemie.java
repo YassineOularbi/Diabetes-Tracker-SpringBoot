@@ -2,7 +2,6 @@ package com.diabetestracker.model;
 
 import com.diabetestracker.enums.Level;
 import jakarta.persistence.*;
-
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;

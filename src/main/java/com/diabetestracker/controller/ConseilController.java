@@ -54,7 +54,7 @@ public class ConseilController {
         if (conseil.isEmpty()) {
             conseil = Optional.of(new Conseil(level, level.getDefaultConseil()));
         }
-        model.addAttribute("conseil", conseil.get()); // Unwrapping the Optional
+        model.addAttribute("conseil", conseil.get());
         return "conseil_detail";
     }
 

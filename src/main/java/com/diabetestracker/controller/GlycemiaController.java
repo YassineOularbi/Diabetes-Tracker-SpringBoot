@@ -70,6 +70,23 @@ public class GlycemiaController {
         return "viewConseil";
     }
 
+
+//    @GetMapping("/{level}")
+//    public String getConseilByLevel(@PathVariable("level") String level, Model model) {
+//        try {
+//            double parsedLevel = Double.parseDouble(level);
+//            Level enumLevel = Level.fromValue(parsedLevel);
+//            Optional<Conseil> conseil = conseilService.getConseilByLevel(enumLevel);
+//            if (conseil.isEmpty()) {
+//                conseil = Optional.of(new Conseil(enumLevel, enumLevel.getDefaultConseil()));
+//            }
+//            model.addAttribute("conseil", conseil.get());
+//            return "conseil_detail";
+//        } catch (NumberFormatException e) {
+//            return "redirect:/conseil";
+//        }
+//    }
+
     @GetMapping("/delete/{id}")
     public String deleteGlycemie(@PathVariable Long id) {
         glycemieService.deleteGlycemieById(id);
