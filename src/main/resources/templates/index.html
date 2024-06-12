@@ -10,30 +10,32 @@
 </head>
 <body>
 <div class="container my-2" align="center">
-
     <h3>Diabetic List</h3>
-    <a th:href="@{/addnew}" class="btn btn-primary btn-sm mb-3" >Add Diabetic</a>
+    <a th:href="@{/addnew}" class="btn btn-primary btn-sm mb-3">Add Diabetic</a>
+
     <table style="width:80%" border="1"
-           class = "table table-striped table-responsive-md">
+           class="table table-striped table-responsive-md">
         <thead>
         <tr>
             <th>Name</th>
             <th>Type</th>
-            <th>Action</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="diabetic:${diabetics}">
             <td th:text="${diabetic.name}"></td>
             <td th:text="${diabetic.type}"></td>
-            <td> <a th:href="@{/showFormForUpdate/{id}(id=${diabetic.id})}"
-                    class="btn btn-primary">Update</a>
-                <a th:href="@{/deleteDiabetic/{id}(id=${diabetic.id})}"
-                   class="btn btn-danger">Delete</a>
+            <td>
+                <a th:href="@{/showFormForUpdate/{id}(id=${diabetic.id})}" class="btn btn-primary">Update</a>
+                <a th:href="@{/deleteDiabetic/{id}(id=${diabetic.id})}" class="btn btn-danger">Delete</a>
+                <a th:href="@{/glycemie/glycemie/{id}(id=${diabetic.id})}" class="btn btn-info">View Glycemies</a>
+                <a th:href="@{/glycemie/new/{id}(id=${diabetic.id})}" class="btn btn-success">Add Glycemie</a>
             </td>
         </tr>
         </tbody>
     </table>
+
 </div>
 </body>
 </html>
