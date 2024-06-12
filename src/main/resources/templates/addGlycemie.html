@@ -12,6 +12,7 @@
 <div class="container">
     <h1>Add Glycemie</h1>
     <form action="#" th:action="@{/glycemie/new}" th:object="${glycemie}" method="post">
+        <input type="hidden" id="diabeticId" name="diabeticId" th:value="${glycemie.diabetic.id}" required>
         <div class="form-group">
             <label for="value">Value:</label>
             <input type="number" step="0.01" class="form-control" id="value" name="value" th:field="*{value}" required>
@@ -29,4 +30,3 @@
 </div>
 </body>
 </html>
-

@@ -1,9 +1,12 @@
 package com.diabetestracker.controller;
 
 import com.diabetestracker.model.Glycemie;
-import com.diabetestracker.model.Conseil;
+import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.enums.Level;
+import com.diabetestracker.model.Conseil;
+
 import com.diabetestracker.service.GlycemieService;
+import com.diabetestracker.service.DiabeticService;
 import com.diabetestracker.service.ConseilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,6 +27,9 @@ public class GlycemiaController {
     private GlycemieService glycemieService;
 
     @Autowired
+    private DiabeticService diabeticService;
+
+    @Autowired
     private ConseilService conseilService;
 
     @GetMapping
@@ -31,9 +38,12 @@ public class GlycemiaController {
         return "registrations";
     }
 
-    @GetMapping("/new")
-    public String showNewGlycemieForm(Model model) {
-        model.addAttribute("glycemie", new Glycemie());
+    @GetMapping("/new/{diabeticId}")
+    public String showNewGlycemieForm(@PathVariable Long diabeticId, Model model) {
+        Glycemie glycemie = new Glycemie();
+        Diabetic diabetic = diabeticService.getById(diabeticId);
+        glycemie.setDiabetic(diabetic); // Set diabetic
+        model.addAttribute("glycemie", glycemie);
         return "addGlycemie";
     }
 
@@ -41,11 +51,14 @@ public class GlycemiaController {
     public String saveGlycemie(@RequestParam("value") double value,
                                @RequestParam("date") String date,
                                @RequestParam("unit") String unit,
+                               @RequestParam("diabeticId") Long diabeticId, // Receive diabeticId
                                Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
         Level level = Level.fromValue(value);
         Glycemie glycemie = new Glycemie(value, dateTime, level, unit);
+        Diabetic diabetic = diabeticService.getById(diabeticId);
+        glycemie.setDiabetic(diabetic);
 
         glycemieService.saveGlycemie(glycemie);
         Optional<Conseil> conseil = conseilService.getConseilByLevel(level);
@@ -62,4 +75,18 @@ public class GlycemiaController {
         glycemieService.deleteGlycemieById(id);
         return "redirect:/glycemie";
     }
+    @GetMapping("/glycemie/{id}")
+    public String viewGlycemies(@PathVariable Long id, Model model) {
+        Diabetic diabetic = diabeticService.getDiabeticById(id);
+        if (diabetic != null) {
+            List<Glycemie> glycemies = diabetic.getAllGlycemies();
+            model.addAttribute("listGlycemies", glycemies);
+            return "registrations";
+        } else {
+            return "redirect:/";
+        }
+    }
+
+
+
 }

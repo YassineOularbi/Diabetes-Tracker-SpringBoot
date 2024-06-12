@@ -4,6 +4,9 @@ import com.diabetestracker.enums.DiabeticType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,4 +22,13 @@ public class Diabetic {
     private DiabeticType type;
     private Integer age;
     private String picture;
+    @OneToMany(mappedBy = "diabetic")
+    private List<Glycemie> glycemies;
+
+    public List<Glycemie> getAllGlycemies() {
+        return this.glycemies;
+    }
 }
+
+
+
