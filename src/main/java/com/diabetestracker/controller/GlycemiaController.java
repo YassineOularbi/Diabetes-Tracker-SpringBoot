@@ -24,13 +24,15 @@ import java.util.Optional;
 public class GlycemiaController {
 
     @Autowired
-    private GlycemieService glycemieService;
+    private  GlycemieService glycemieService;
 
     @Autowired
     private DiabeticService diabeticService;
 
     @Autowired
     private ConseilService conseilService;
+
+
 
     @GetMapping
     public String listGlycemies(ModelMap modelMap) {
