@@ -3,10 +3,8 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Diabetic Management System</title>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,22 +12,16 @@
         .container {
             margin-top: 50px;
         }
-
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 20px;
         }
-
-
-        .bt{
+        .bt {
             background-color: #0f8b97;
             color: white;
             border-bottom: #0f8b97;
             border-radius: 1px;
         }
-
-
-        /* Navbar styles */
         .navbar {
             background-color: #17a2b8;
         }
@@ -46,7 +38,6 @@
         .navbar-nav .nav-link {
             color: white;
         }
-        /* Footer styles */
         footer {
             background-color: #17a2b8;
             color: white;
@@ -61,13 +52,11 @@
             margin: 0 10px;
             font-size: 1.5em;
         }
-        #bt{
+        #bt {
             background-color: #0f8b97;
             color: white;
         }
-
     </style>
-
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -76,8 +65,7 @@
             <img src="https://i0.wp.com/aquelle.co.za/wp-content/uploads/2023/09/FInal-DIABETES-LOGO_FULL.png?resize=553%2C553&ssl=1" alt="Diabetes Tracker Logo">
             Diabetes Tracker
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -121,26 +109,83 @@
             <td th:text="${glycemie.unit}"></td>
             <td th:text="${glycemie.date}"></td>
             <td>
-                <a th:href="@{/glycemie/delete/{id}(id=${glycemie.id})}" class="btn btn-danger"
-                   onclick="return confirm('Are you sure you want to delete this glycemie?')">Delete</a>
+                <a th:href="@{/glycemie/delete/{id}(id=${glycemie.id})}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this glycemie?')">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
+    <canvas id="glycemieChart" width="400" height="200"></canvas>
+    <button onclick="fetchGlycemies('week')" class="btn btn-primary mt-3">Voir par semaine</button>
+    <button onclick="fetchGlycemies('month')" class="btn btn-primary mt-3">Voir par mois</button>
+    <button onclick="fetchGlycemies()" class="btn btn-primary mt-3">Voir tout</button>
 </div>
+
 <footer>
     <div class="social-icons">
         <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
         <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
     </div>
-    <p>&copy; 2024 Diabetes Tracker. All rights reserved.</p>
+    <p>&copy; 2023 Diabetes Tracker. All rights reserved.</p>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const ctx = document.getElementById('glycemieChart').getContext('2d');
+    let glycemieChart;
 
+    function renderChart(labels, data) {
+        if (glycemieChart) {
+            glycemieChart.destroy();
+        }
+        glycemieChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Glycémie',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    function fetchGlycemies(period = '') {
+        const userId = 1; // Change this to the current user's ID
+        let url = `/api/glycemies/${userId}`;
+        if (period) {
+            url += `/${period}`;
+        }
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.date);
+                const values = data.map(item => item.value);
+                renderChart(labels, values);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+    
+    fetchGlycemies();
+</script>
 </body>
 </html>

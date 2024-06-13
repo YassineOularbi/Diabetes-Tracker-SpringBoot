@@ -14,5 +14,8 @@ public interface GlycemieRepository extends JpaRepository<Glycemie, Long> {
 
     List<Glycemie> findAllByDate(LocalDateTime date);
 
+    List<Glycemie> findByUserIdAndDateBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
+
+    List<Glycemie> findByUserId(Long userId);
 }
 

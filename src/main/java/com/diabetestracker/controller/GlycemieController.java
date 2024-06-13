@@ -13,17 +13,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/glycemie")
-public class GlycemiaController {
+public class GlycemieController {
 
     @Autowired
     private GlycemieService glycemieService;
 
     @Autowired
     private ConseilService conseilService;
+
+    // Thymeleaf Methods
 
     @GetMapping
     public String listGlycemies(ModelMap modelMap) {
@@ -61,5 +64,34 @@ public class GlycemiaController {
     public String deleteGlycemie(@PathVariable Long id) {
         glycemieService.deleteGlycemieById(id);
         return "redirect:/glycemie";
+    }
+
+    // REST API Methods
+
+    @RestController
+    @RequestMapping("/api/glycemies")
+    public static class GlycemieRestController {
+
+        @Autowired
+        private GlycemieService glycemieService;
+
+        @GetMapping("/{userId}")
+        public List<Glycemie> getGlycemiesByUser(@PathVariable Long userId) {
+            return glycemieService.getGlycemiesByUser(userId);
+        }
+
+        @GetMapping("/{userId}/week")
+        public List<Glycemie> getGlycemiesByWeek(@PathVariable Long userId) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime weekAgo = now.minusWeeks(1);
+            return glycemieService.getGlycemiesByUserAndDateRange(userId, weekAgo, now);
+        }
+
+        @GetMapping("/{userId}/month")
+        public List<Glycemie> getGlycemiesByMonth(@PathVariable Long userId) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime monthAgo = now.minusMonths(1);
+            return glycemieService.getGlycemiesByUserAndDateRange(userId, monthAgo, now);
+        }
     }
 }

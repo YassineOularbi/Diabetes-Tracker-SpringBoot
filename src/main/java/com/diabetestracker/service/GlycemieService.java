@@ -32,4 +32,14 @@ public class GlycemieService {
     public List<Glycemie> findAllByDate(LocalDateTime date) {
         return glycemieRepository.findAllByDate(date);
     }
+
+    public List<Glycemie> getGlycemiesByUser(Long userId) {
+        // Implémentation pour récupérer les glycémies par utilisateur
+        return glycemieRepository.findByUserId(userId);
+    }
+
+    public List<Glycemie> getGlycemiesByUserAndDateRange(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+        // Implémentation pour récupérer les glycémies par utilisateur et plage de dates
+        return glycemieRepository.findByUserIdAndDateBetween(userId, startDate, endDate);
+    }
 }
