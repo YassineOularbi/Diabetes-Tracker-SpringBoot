@@ -24,12 +24,10 @@
         <tr th:each="conseil : ${listConseils}">
             <td th:text="${conseil.level}"></td>
             <td th:text="${conseil.message}"></td>
-            <td><a th:href="@{'/deleteConseil/' + ${conseil.id}}">Delete</a></td>
+            <td><a th:href="@{'/deleteConseil/' + ${conseil.id}}" class="btn btn-danger btn-sm">Delete</a></td>
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/newConseil}">Add New Conseil</a>
-
 </div>
 </body>
 </html>

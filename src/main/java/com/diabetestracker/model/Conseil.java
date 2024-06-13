@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
+
 public class Conseil {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
