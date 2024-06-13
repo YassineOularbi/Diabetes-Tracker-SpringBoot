@@ -22,7 +22,11 @@ public class Diabetic {
     private DiabeticType type;
     private Integer age;
     private String picture;
-    @OneToMany(mappedBy = "diabetic")
+
+
+//    @OneToMany(mappedBy = "diabetic")
+//    private List<Glycemie> glycemies;
+    @OneToMany(mappedBy = "diabetic", cascade = CascadeType.REMOVE)
     private List<Glycemie> glycemies;
 
     public List<Glycemie> getAllGlycemies() {

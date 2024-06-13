@@ -16,11 +16,12 @@ import java.util.Optional;
 public class ConseilController {
 
     @Autowired
-    private ConseilService conseilService;
+    private  ConseilService conseilService;
 
     @Autowired
 
     private GlycemieService glycemieService ;
+
 
     @GetMapping
     public String listConseils(Model model) {

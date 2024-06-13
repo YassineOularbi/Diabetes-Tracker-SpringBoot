@@ -43,6 +43,7 @@ public class DiabeticController {
         diabeticService.delete(id);
         return "redirect:/";
 
+
     }
 
 }

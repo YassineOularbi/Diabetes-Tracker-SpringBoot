@@ -1,6 +1,8 @@
 package com.diabetestracker.service;
 
+import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.model.Glycemie;
+import com.diabetestracker.repository.DiabeticRepository;
 import com.diabetestracker.repository.GlycemieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,9 @@ public class GlycemieService {
     @Autowired
     private GlycemieRepository glycemieRepository;
 
+    @Autowired
+    private DiabeticRepository diabeticRepository;
+
     public List<Glycemie> getAllGlycemies() {
         return glycemieRepository.findAll();
     }
@@ -22,8 +27,11 @@ public class GlycemieService {
         glycemieRepository.save(glycemie);
     }
 
-    public void deleteGlycemieById(Long id) {
+    public Diabetic deleteGlycemieById(Long id) {
+        var glycemie = glycemieRepository.findById(id);
+        var diabetic = diabeticRepository.findById(glycemie.get().getDiabetic().getId());
         glycemieRepository.deleteById(id);
+        return diabetic.get();
     }
 
     public List<Glycemie> findHourlyGlycemiaData(LocalDateTime startDate, LocalDateTime endDate) {
