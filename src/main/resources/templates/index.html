@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Diabetic</title>
+    <meta charset="UTF-8">
+    <title>Diabetic Management System</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -19,13 +19,21 @@
         <tr>
             <th>Name</th>
             <th>Type</th>
+            <th>Age</th>
+            <th>Picture</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="diabetic:${diabetics}">
+        <tr th:each="diabetic : ${diabetics}">
             <td th:text="${diabetic.name}"></td>
             <td th:text="${diabetic.type}"></td>
+            <td th:text="${diabetic.age}"></td>
+            <td>
+                <img th:if="${diabetic.picture != null}"
+                     th:src="${diabetic.picture}"
+                     alt="Diabetic Picture" style="max-width: 100px; max-height: 100px;">
+            </td>
             <td>
                 <a th:href="@{/showFormForUpdate/{id}(id=${diabetic.id})}" class="btn btn-primary">Update</a>
                 <a th:href="@{/deleteDiabetic/{id}(id=${diabetic.id})}" class="btn btn-danger">Delete</a>

@@ -1,5 +1,4 @@
 package com.diabetestracker.model;
-
 import com.diabetestracker.enums.DiabeticType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,9 +28,12 @@ public class Diabetic {
     @OneToMany(mappedBy = "diabetic", cascade = CascadeType.REMOVE)
     private List<Glycemie> glycemies;
 
+
     public List<Glycemie> getAllGlycemies() {
         return this.glycemies;
     }
+
+
 }
 
 
