@@ -21,7 +21,9 @@ public class Glycemie {
     private Double value;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "level", nullable = false, length = 25)
     private Level level;
+
     private String unit;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")

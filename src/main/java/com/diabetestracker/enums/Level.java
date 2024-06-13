@@ -2,6 +2,8 @@ package com.diabetestracker.enums;
 
 public enum Level {
 
+
+
     NORMAL(70, 140, "Your glycemic level is normal. Keep maintaining your healthy lifestyle." ),
     HYPOGLYCEMIA(Double.NEGATIVE_INFINITY, 70, "Your glycemic level is low. Consider consuming some carbohydrates."),
     HYPERGLYCEMIA(140, Double.POSITIVE_INFINITY, "Your glycemic level is high. Consider consulting your healthcare provider.");
