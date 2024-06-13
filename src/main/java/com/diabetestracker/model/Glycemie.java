@@ -21,7 +21,7 @@ public class Glycemie {
     private Double value;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "level", nullable = false, length = 25)
+    @Column(name = "level", nullable = false, length = 225)
     private Level level;
 
     private String unit;
