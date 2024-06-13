@@ -51,7 +51,7 @@ public class GlycemiaController {
     public String saveGlycemie(@RequestParam("value") double value,
                                @RequestParam("date") String date,
                                @RequestParam("unit") String unit,
-                               @RequestParam("diabeticId") Long diabeticId, // Receive diabeticId
+                               @RequestParam("diabeticId") Long diabeticId,
                                Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
@@ -89,9 +89,11 @@ public class GlycemiaController {
 
     @GetMapping("/delete/{id}")
     public String deleteGlycemie(@PathVariable Long id) {
-        glycemieService.deleteGlycemieById(id);
-        return "redirect:/glycemie";
+        var diabetic = glycemieService.deleteGlycemieById(id);
+        return "redirect:/glycemie/glycemie/"+diabetic.getId();
+
     }
+
     @GetMapping("/glycemie/{id}")
     public String viewGlycemies(@PathVariable Long id, Model model) {
         Diabetic diabetic = diabeticService.getDiabeticById(id);
