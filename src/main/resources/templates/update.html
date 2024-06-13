@@ -18,11 +18,10 @@
 
         <!-- Add hidden form field to handle update -->
         <input type="hidden" th:field="*{id}" />
-
         <input type="text" th:field="*{name}" class="form-control mb-4 col-4">
-
         <input type="text" th:field="*{type}" class="form-control mb-4 col-4">
-
+        <input type="number" th:field="*{age}" placeholder="Diabetic Age" class="form-control mb-4 col-4">
+        <input type="url" th:field="*{picture}" placeholder="Diabetic Picture URL" class="form-control mb-4 col-4">
         <button type="submit" class="btn btn-info col-2"> Update Diabetic</button>
     </form>
 
