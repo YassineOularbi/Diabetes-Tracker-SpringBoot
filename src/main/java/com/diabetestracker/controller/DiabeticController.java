@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/")
-public classDiabeticController {
+public class DiabeticController {
 
     @Autowired
     private DiabeticService diabeticService;
@@ -44,4 +44,5 @@ public classDiabeticController {
         return "redirect:/";
 
     }
+
 }

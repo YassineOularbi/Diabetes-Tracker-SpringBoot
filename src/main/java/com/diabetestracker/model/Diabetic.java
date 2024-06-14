@@ -1,14 +1,16 @@
 package com.diabetestracker.model;
-
 import com.diabetestracker.enums.DiabeticType;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
+import java.util.List;
+
+
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
+@ToString
 @Entity
 public class Diabetic {
     @Id
@@ -18,5 +20,25 @@ public class Diabetic {
     @Enumerated(EnumType.STRING)
     private DiabeticType type;
     private Integer age;
+    private float weight;
+    private float height;
     private String picture;
+    @OneToMany(mappedBy = "diabetic")
+    @ToString.Exclude
+    private List<Program> program;
+
+
+//    @OneToMany(mappedBy = "diabetic")
+//    private List<Glycemie> glycemies;
+    @OneToMany(mappedBy = "diabetic", cascade = CascadeType.REMOVE)
+    private List<Glycemie> glycemies;
+
+
+    public List<Glycemie> getAllGlycemies() {
+        return this.glycemies;
+    }
+
 }
+
+
+

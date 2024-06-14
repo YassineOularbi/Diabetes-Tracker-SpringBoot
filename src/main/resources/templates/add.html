@@ -9,25 +9,23 @@
           crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
+<div class="container my-2" align="center">
     <h1>Diabetic Management System</h1>
     <hr>
     <h2>Save Diabetic</h2>
 
-    <form action="#" th:action="@{/save}" th:object="${diabetic}"
-          method="POST">
-        <input type="text" th:field="*{name}" placeholder="Diabetic Name"
-               class="form-control mb-4 col-4"> <input type="text"
-                                                       th:field="*{type}" placeholder="Diabetic Type"
-                                                       class="form-control mb-4 col-4">
-
-        <button type="submit" class="btn btn-info col-2">Save
-            Diabetic</button>
+    <form action="#" th:action="@{/save}" th:object="${diabetic}" method="POST" enctype="multipart/form-data">
+        <input type="text" th:field="*{name}" placeholder="Diabetic Name" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{type}" placeholder="Diabetic Type" class="form-control mb-4 col-4">
+        <input type="number" th:field="*{age}" placeholder="Diabetic Age" class="form-control mb-4 col-4">
+        <input type="url" th:field="*{picture}" placeholder="Diabetic Picture URL" class="form-control mb-4 col-4">
+        <button type="submit" class="btn btn-info col-2">Save Diabetic</button>
     </form>
+
 
     <hr>
 
-    <a th:href="@{/}"> Back to Diabetic List</a>
+    <a th:href="@{/glycemie/registrations}"> Back to Diabetic List</a>
 </div>
 </body>
 </html>
