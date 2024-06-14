@@ -1,5 +1,4 @@
 # Diabetes-Tracker-SpringBoot
-ker
 
 Ce projet est conçu pour aider les patients à surveiller leurs niveaux de glycémie, à suivre leurs repas, à enregistrer leurs activités physiques et à visualiser efficacement les tendances des données.
 
@@ -38,9 +37,16 @@ Ce projet est conçu pour aider les patients à surveiller leurs niveaux de glyc
 
 ### Étapes pour Exécuter
 
-1. Clonez le repository :
+1. Clonez le repository 
+2. Configurez la base de données MySQL
+3. Compilez et exécutez l'application avec Maven
+4. Accédez à l'application à http://localhost:8080 dans votre navigateur web
 
-   ```bash
-   git clone https://github.com/votre-utilisateur/diabetes-tracker.git
-   cd diabetes-tracker
+   
+ ### Structure du Projet
+ - src/main/java : Contient les classes Java backend. .
+
+- src/main/resources : Fichiers de configuration, templates Thymeleaf, fichiers statiques (CSS, JS).
+
+- src/test : Tests unitaires et d'intégration.
 
