@@ -10,58 +10,21 @@
 </head>
 <body>
 <div class="container my-2">
-    <h1 class="text-center">Diabetic Management Dashboard</h1>
-    <hr>
 
-    <div class="row">
-        <!-- Section for Diabetic List -->
-        <div class="col-md-6">
-            <h2>Diabetic List</h2>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Age</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="diabetic : ${diabetics}">
-                    <td th:text="${diabetic.name}"></td>
-                    <td th:text="${diabetic.type}"></td>
-                    <td th:text="${diabetic.age}"></td>
-                    <td>
-                        <a th:href="@{/glycemie/glycemie/{id}(id=${diabetic.id})}" class="btn btn-info">View Glycemie</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <h2>Save Diabetic</h2>
 
-        <!-- Section for Glycemie Records -->
-        <div class="col-md-6">
-            <h2>Glycemie Records</h2>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Value</th>
-                    <th>Date</th>
-                    <th>Level</th>
-                    <th>Diabetic</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="glycemie : ${glycemies}">
-                    <td th:text="${glycemie.value}"></td>
-                    <td th:text="${glycemie.date}"></td>
-                    <td th:text="${glycemie.level}"></td>
-                    <td th:text="${glycemie.diabetic.name}"></td>
-                </tr>
-                </tbody>
-            </table>
+    <form action="#" th:action="@{/save}" th:object="${diabetic}" method="POST" enctype="multipart/form-data">
+        <input type="text" th:field="*{name}" placeholder="Diabetic Name" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{type}" placeholder="Diabetic Type" class="form-control mb-4 col-4">
+        <input type="number" th:field="*{age}" placeholder="Diabetic Age" class="form-control mb-4 col-4">
+        <input type="number" th:field="*{height}" placeholder="Diabetic height" class="form-control mb-4 col-4">
+        <input type="number" th:field="*{weight}" placeholder="Diabetic weight" class="form-control mb-4 col-4">
+        <p>your photo</p>
+        <div class="form-group">
+            <input type="file" th:field="*{picture}" th:name="picture" th:accept="picture/*" class="form-control-file">
         </div>
-    </div>
+        <button type="submit" class="btn btn-info col-2">Save Diabetic</button>
+    </form>
     <hr>
     <a th:href="@{/}" class="btn btn-secondary">Back to Home</a>
 </div>
