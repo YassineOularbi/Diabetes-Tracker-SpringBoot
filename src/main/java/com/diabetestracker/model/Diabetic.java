@@ -23,6 +23,7 @@ public class Diabetic {
     private float weight;
     private float height;
     private String picture;
+
     @OneToMany(mappedBy = "diabetic")
     @ToString.Exclude
     private List<Program> program;
