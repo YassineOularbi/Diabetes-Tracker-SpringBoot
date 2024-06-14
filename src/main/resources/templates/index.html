@@ -39,6 +39,8 @@
                 <a th:href="@{/deleteDiabetic/{id}(id=${diabetic.id})}" class="btn btn-danger">Delete</a>
                 <a th:href="@{/glycemie/glycemie/{id}(id=${diabetic.id})}" class="btn btn-info">View Glycemies</a>
                 <a th:href="@{/glycemie/new/{id}(id=${diabetic.id})}" class="btn btn-success">Add Glycemie</a>
+                <a th:href="@{/programs/all/{id}(id=${diabetic.id})}" class="btn btn-info">View Programs</a>
+                <a th:href="@{/programs/addnew/{id}(id=${diabetic.id})}" class="btn btn-success">Add Program</a>
             </td>
         </tr>
         </tbody>

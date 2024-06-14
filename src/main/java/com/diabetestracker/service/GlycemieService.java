@@ -41,4 +41,9 @@ public class GlycemieService {
     public List<Glycemie> findAllByDate(LocalDateTime date) {
         return glycemieRepository.findAllByDate(date);
     }
+
+    public Glycemie getLatestGlycemie() {
+        return glycemieRepository.findTopByOrderByDateDesc();
+    }
+
 }

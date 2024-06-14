@@ -6,11 +6,11 @@ import lombok.*;
 import java.util.List;
 
 
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
+@ToString
 @Entity
 public class Diabetic {
     @Id
@@ -20,8 +20,13 @@ public class Diabetic {
     @Enumerated(EnumType.STRING)
     private DiabeticType type;
     private Integer age;
+    private float weight;
+    private float height;
     private String picture;
-    
+
+    @OneToMany(mappedBy = "diabetic")
+    @ToString.Exclude
+    private List<Program> program;
 
 
 //    @OneToMany(mappedBy = "diabetic")
@@ -33,7 +38,6 @@ public class Diabetic {
     public List<Glycemie> getAllGlycemies() {
         return this.glycemies;
     }
-
 
 }
 

@@ -1,25 +1,28 @@
 package com.diabetestracker.model;
 
-import com.diabetestracker.enums.DiabeticType;
-import com.diabetestracker.enums.ExerciceType;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.sql.Time;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Entity
 public class Exercice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Enumerated(EnumType.STRING)
-    private ExerciceType type;
-    private Time duration;
+    private Long sugarEffect;
+    private Long levelMax;
+    private Long levelMin;
+    private String note;
     private String picture;
+    @OneToOne(mappedBy = "exercice")
+    @ToString.Exclude
+    private Program program;
+
+
 }
