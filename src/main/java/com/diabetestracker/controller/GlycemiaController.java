@@ -8,6 +8,8 @@ import com.diabetestracker.model.Conseil;
 import com.diabetestracker.service.GlycemieService;
 import com.diabetestracker.service.DiabeticService;
 import com.diabetestracker.service.ConseilService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 public class GlycemiaController {
 
     @Autowired
-    private  GlycemieService glycemieService;
+    private GlycemieService glycemieService;
 
     @Autowired
     private DiabeticService diabeticService;
@@ -36,11 +38,15 @@ public class GlycemiaController {
     @Autowired
     private ConseilService conseilService;
 
-
-
     @GetMapping
-    public String listGlycemies(ModelMap modelMap) {
-        modelMap.addAttribute("listGlycemies", glycemieService.getAllGlycemies());
+    public String listGlycemies(ModelMap modelMap) throws JsonProcessingException {
+        List<Glycemie> glycemies = glycemieService.getAllGlycemies();
+        modelMap.addAttribute("listGlycemies", glycemies);
+
+        // Convert Glycemie data to JSON for Chart.js
+        String glycemiaDataJson = new ObjectMapper().writeValueAsString(glycemies);
+        modelMap.addAttribute("glycemiaData", glycemiaDataJson);
+
         return "registrations";
     }
 
@@ -76,28 +82,10 @@ public class GlycemiaController {
         return "viewConseil";
     }
 
-
-//    @GetMapping("/{level}")
-//    public String getConseilByLevel(@PathVariable("level") String level, Model model) {
-//        try {
-//            double parsedLevel = Double.parseDouble(level);
-//            Level enumLevel = Level.fromValue(parsedLevel);
-//            Optional<Conseil> conseil = conseilService.getConseilByLevel(enumLevel);
-//            if (conseil.isEmpty()) {
-//                conseil = Optional.of(new Conseil(enumLevel, enumLevel.getDefaultConseil()));
-//            }
-//            model.addAttribute("conseil", conseil.get());
-//            return "conseil_detail";
-//        } catch (NumberFormatException e) {
-//            return "redirect:/conseil";
-//        }
-//    }
-
     @GetMapping("/delete/{id}")
     public String deleteGlycemie(@PathVariable Long id) {
         var diabetic = glycemieService.deleteGlycemieById(id);
-        return "redirect:/glycemie/glycemie/"+diabetic.getId();
-
+        return "redirect:/glycemie/glycemie/" + diabetic.getId();
     }
 
     @GetMapping("/glycemie/{id}")
@@ -111,5 +99,4 @@ public class GlycemiaController {
             return "redirect:/";
         }
     }
-
 }

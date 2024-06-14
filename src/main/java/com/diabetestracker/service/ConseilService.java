@@ -33,4 +33,8 @@ public class ConseilService {
 
     public void deleteConseilById(java.lang.Long id) {
     }
+
+    public Optional<Conseil> getConseilById(Long id) {
+        return conseilRepo.findById(id);
+    }
 }

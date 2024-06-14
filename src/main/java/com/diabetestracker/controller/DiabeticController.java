@@ -49,6 +49,14 @@ public class DiabeticController {
         return "redirect:/";
     }
 
+//    @PostMapping("/save")
+//    public <MultipartFile> String saveEmployee(@ModelAttribute("diabetic") Diabetic diabetic,
+//                                               @RequestParam("picture") MultipartFile picture) {
+//        diabetic.setPicture((String) picture);
+//        diabeticService.save(diabetic);
+//        return "redirect:/";
+//    }
+
     @GetMapping("/showFormForUpdate/{id}")
     public String updateForm(@PathVariable(value = "id") Long id, Model model) {
         model.addAttribute("diabetic", diabeticService.getById(id));
