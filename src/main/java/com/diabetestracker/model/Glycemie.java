@@ -7,12 +7,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Entity
 public class Glycemie {
     @Id
@@ -32,10 +34,15 @@ public class Glycemie {
     @ManyToOne
     private Diabetic diabetic;
 
+    @OneToMany(mappedBy = "glycemie")
+    @ToString.Exclude
+    private List<Program> program;
+
     public Glycemie(Double value, LocalDateTime date, Level level, String unit) {
         this.value = value;
         this.date = date;
         this.level = level;
         this.unit = unit;
     }
+
 }

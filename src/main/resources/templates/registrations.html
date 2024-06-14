@@ -7,11 +7,47 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h1, h2 {
+            color: #343a40;
+        }
+        .container {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <h1>List of recorded blood glucose readings</h1>
-    <table style="width: 80%" border="1" class="table table-striped table-responsive-md">
+    <h1 class="mt-4 mb-4">List of Recorded Blood Glucose Readings</h1>
+
+    <!-- Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label for="filter" class="form-label">Filter by:</label>
+            <select id="filter" class="form-select">
+                <option value="all">All</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button id="applyFilter" class="btn btn-primary" onclick="applyFilter()">Apply</button>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <canvas id="glycemiaChart"></canvas>
+        </div>
+    </div>
+
+    <h2 class="mt-4 mb-4">Glycemia Records</h2>
+    <table style="width: 100%" border="1" class="table table-striped table-responsive-md">
         <thead>
         <tr>
             <th>Id</th>
@@ -37,5 +73,83 @@
         </tbody>
     </table>
 </div>
+
+<script th:inline="javascript">
+    var glycemiaData = /*[[${glycemiaData}]]*/ [];
+
+    function renderChart(data) {
+        var ctx = document.getElementById('glycemiaChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(entry => new Date(entry.date)),
+                datasets: [{
+                    label: 'Glycemia',
+                    data: data.map(entry => entry.value),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Glycemia Value'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function filterData() {
+        var filter = document.getElementById('filter').value;
+        var filteredData;
+
+        if (filter === 'week') {
+            filteredData = glycemiaData.filter(entry => {
+                var entryDate = new Date(entry.date);
+                var now = new Date();
+                var oneWeekAgo = new Date();
+                oneWeekAgo.setDate(now.getDate() - 7);
+                return entryDate >= oneWeekAgo && entryDate <= now;
+            });
+        } else if (filter === 'month') {
+            filteredData = glycemiaData.filter(entry => {
+                var entryDate = new Date(entry.date);
+                var now = new Date();
+                var oneMonthAgo = new Date();
+                oneMonthAgo.setMonth(now.getMonth() - 1);
+                return entryDate >= oneMonthAgo && entryDate <= now;
+            });
+        } else {
+            filteredData = glycemiaData;
+        }
+
+        renderChart(filteredData);
+    }
+
+    function applyFilter() {
+        filterData();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        renderChart(glycemiaData); // Initial render with all data
+    });
+</script>
+
 </body>
 </html>
