@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Diabetic Management System</title>
+    <title>Diabetic List</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -21,6 +21,8 @@
             <th>Type</th>
             <th>Age</th>
             <th>Picture</th>
+            <th>Height</th>
+            <th>Weight</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -34,6 +36,8 @@
                      th:src="${diabetic.picture}"
                      alt="Diabetic Picture" style="max-width: 100px; max-height: 100px;">
             </td>
+            <td th:text="${diabetic.height}"></td>
+            <td th:text="${diabetic.weight}"></td>
             <td>
                 <a th:href="@{/showFormForUpdate/{id}(id=${diabetic.id})}" class="btn btn-primary">Update</a>
                 <a th:href="@{/deleteDiabetic/{id}(id=${diabetic.id})}" class="btn btn-danger">Delete</a>
