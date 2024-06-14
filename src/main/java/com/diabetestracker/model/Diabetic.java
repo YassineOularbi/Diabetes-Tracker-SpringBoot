@@ -21,6 +21,7 @@ public class Diabetic {
     private DiabeticType type;
     private Integer age;
     private String picture;
+    
 
 
 //    @OneToMany(mappedBy = "diabetic")
