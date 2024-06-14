@@ -44,9 +44,9 @@ Ce projet est conçu pour aider les patients à surveiller leurs niveaux de glyc
 
    
  ### Structure du Projet
- - **src/main/java : Contient les classes Java backend. .
+ - src/main/java : Contient les classes Java backend. .
 
-- **src/main/resources : Fichiers de configuration, templates Thymeleaf, fichiers statiques (CSS, JS).
+- src/main/resources : Fichiers de configuration, templates Thymeleaf, fichiers statiques (CSS, JS).
 
-- **src/test : Tests unitaires et d'intégration.
+- src/test : Tests unitaires et d'intégration.
 
