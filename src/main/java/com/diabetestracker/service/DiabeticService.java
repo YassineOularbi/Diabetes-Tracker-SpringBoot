@@ -38,6 +38,10 @@ public class DiabeticService {
         return diabeticRepository.findById(id).orElse(null);
     }
 
+    public Optional<Diabetic> getDiabeticByIdD(Long id) {
+        return diabeticRepository.findById(id);
+    }
+
     public List<Glycemie> getAllGlycemiesByDiabeticId(Long diabeticId) {
         Diabetic diabetic = diabeticRepository.findById(diabeticId).orElse(null);
         if (diabetic != null) {

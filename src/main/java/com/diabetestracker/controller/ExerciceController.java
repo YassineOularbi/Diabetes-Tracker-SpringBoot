@@ -1,43 +1,56 @@
 package com.diabetestracker.controller;
 
-import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.model.Exercice;
-import com.diabetestracker.service.DiabeticService;
 import com.diabetestracker.service.ExerciceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/exercice")
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/exercices")
 public class ExerciceController {
 
     @Autowired
     private ExerciceService exerciceService;
 
-    @GetMapping("/addnew")
-    public String addNewEmployee(Model model) {
-        model.addAttribute("exercice", new Exercice());
-        return "add";
+    @GetMapping
+    public List<Exercice> getAllExercices() {
+        return exerciceService.getAllExercices();
     }
 
-    @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute("exercice") Exercice exercice) {
-        exerciceService.save(exercice);
-        return "redirect:/";
+    @GetMapping("/{id}")
+    public ResponseEntity<Exercice> getExerciceById(@PathVariable Long id) {
+        Optional<Exercice> exercice = exerciceService.getExerciceById(id);
+        return exercice.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/showFormForUpdate/{id}")
-    public String updateForm(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("exercice", exerciceService.getById(id));
-        return "update";
+    @PostMapping
+    public Exercice createExercice(@RequestBody Exercice exercice) {
+        return exerciceService.saveExercice(exercice);
     }
 
-    @GetMapping("/deleteDiabetic/{id}")
-    public String deleteThroughId(@PathVariable(value = "id") Long id) {
-        exerciceService.delete(id);
-        return "redirect:/";
+    @PutMapping("/{id}")
+    public ResponseEntity<Exercice> updateExercice(@PathVariable Long id, @RequestBody Exercice updatedExercice) {
+        Optional<Exercice> exercice = exerciceService.getExerciceById(id);
+        if (exercice.isPresent()) {
+            updatedExercice.setId(id);
+            return ResponseEntity.ok(exerciceService.saveExercice(updatedExercice));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteExercice(@PathVariable Long id) {
+        if (exerciceService.getExerciceById(id).isPresent()) {
+            exerciceService.deleteExercice(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
