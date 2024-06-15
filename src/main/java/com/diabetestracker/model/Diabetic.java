@@ -28,13 +28,8 @@ public class Diabetic {
     @ToString.Exclude
     private List<Program> program;
 
-
-//    @OneToMany(mappedBy = "diabetic")
-//    private List<Glycemie> glycemies;
     @OneToMany(mappedBy = "diabetic", cascade = CascadeType.REMOVE)
     private List<Glycemie> glycemies;
-
-
     public List<Glycemie> getAllGlycemies() {
 
         return this.glycemies;

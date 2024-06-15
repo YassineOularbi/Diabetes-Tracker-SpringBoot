@@ -2,10 +2,15 @@ package com.diabetestracker.controller;
 
 import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.service.DiabeticService;
+import com.diabetestracker.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/")
@@ -27,8 +32,20 @@ public class DiabeticController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute("diabetic") Diabetic diabetic) {
-        diabeticService.save(diabetic);
+    public String saveEmployee(@ModelAttribute Diabetic diabetic, @RequestParam("picture") MultipartFile file) {
+        try {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            String uploadDir = "user-photos/";
+
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+
+            diabetic.setPicture(uploadDir + fileName);
+
+            diabeticService.save(diabetic);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return "redirect:/";
     }
 
