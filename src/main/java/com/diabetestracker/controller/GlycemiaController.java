@@ -99,4 +99,16 @@ public class GlycemiaController {
             return "redirect:/";
         }
     }
+
+
+    @GetMapping("/conseil/{level}")
+    public String getConseilByLevel(@PathVariable Level level, Model model) {
+        Optional<Conseil> conseil = conseilService.getConseilByLevel(level);
+        if (conseil.isEmpty()) {
+            conseil = Optional.of(new Conseil(level, level.getDefaultConseil()));
+        }
+        model.addAttribute("conseil", conseil.get());
+        return "viewConseil";
+    }
 }
+

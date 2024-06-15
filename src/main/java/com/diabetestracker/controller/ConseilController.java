@@ -56,17 +56,18 @@ public class ConseilController {
             conseil = Optional.of(new Conseil(level, level.getDefaultConseil()));
         }
         model.addAttribute("conseil", conseil.get());
-        return "conseil_detail";
+        return "viewConseil";
     }
+
+
     @GetMapping("/viewConseil/{id}")
     public String viewConseil(@PathVariable Long id, Model model) {
         Optional<Conseil> conseil = conseilService.getConseilByLevel(Level.fromValue(id));
         if (conseil.isPresent()) {
             model.addAttribute("conseil", conseil.get());
-            return "viewConseil"; // Assurez-vous que "viewConseil" est bien le nom de votre vue Thymeleaf
+            return "viewConseil";
         } else {
-            // Gérer le cas où aucun conseil avec cet ID n'est trouvé
-            return "redirect:/conseil"; // Redirection vers une page par défaut ou une liste de conseils
+            return "redirect:/conseil";
         }
     }
 
