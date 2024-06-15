@@ -29,6 +29,7 @@
                     <option value="Type2" th:selected="${diabetic.type == 'Type2'}">Type2</option>
                     <option value="Gestational" th:selected="${diabetic.type == 'Gestational'}">Gestational</option>
                     <option value="PreDiabetes" th:selected="${diabetic.type == 'PreDiabetes'}">PreDiabetes</option>
+
                 </select>
             </div>
         </div>
@@ -65,7 +66,7 @@
 
     <hr>
 
-    <a th:href="@{/glycemie/registrations}">Back to Diabetic List</a>
+    <a th:href="@{/glycemie/registrations}" class="btn btn-secondary">Back to Diabetic List</a>
 </div>
 </body>
 </html>

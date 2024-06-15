@@ -71,6 +71,12 @@ public class DiabeticController {
         model.addAttribute("diabetic", diabetic);
         return "update";
     }
+    @PostMapping("/update")
+    public String updateDiabetic(@ModelAttribute("diabetic") Diabetic diabetic) {
+        diabeticService.update(diabetic);
+        return "redirect:/";
+    }
+
 
     @PostMapping("/update/{id}")
     public String updateDiabetic(@PathVariable(value = "id") long id, @ModelAttribute("diabetic") Diabetic diabetic) {
