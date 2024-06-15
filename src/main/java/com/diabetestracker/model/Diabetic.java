@@ -36,6 +36,7 @@ public class Diabetic {
 
 
     public List<Glycemie> getAllGlycemies() {
+
         return this.glycemies;
     }
 
