@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,14 +21,14 @@ public class Program {
     @ManyToOne
     private Diabetic diabetic;
 
-    @OneToOne
+    @ManyToOne
     private Exercice exercice;
 
     @ManyToOne
     private Glycemie glycemie;
 
     private Time duration;
-    private Long bloodSugarBefore;
-    private Long bloodSugarAfter;
+    private Float bloodSugarBefore;
+    private Float bloodSugarAfter;
 
 }

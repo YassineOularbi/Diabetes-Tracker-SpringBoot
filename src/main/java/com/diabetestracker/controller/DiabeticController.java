@@ -1,5 +1,6 @@
 package com.diabetestracker.controller;
 
+import com.diabetestracker.enums.DiabeticType;
 import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.service.DiabeticService;
 import com.diabetestracker.util.FileUploadUtil;
@@ -32,42 +33,56 @@ public class DiabeticController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute Diabetic diabetic, @RequestParam("picture") MultipartFile file) {
-        try {
+    public String saveEmployee(
+            @RequestParam("name") String name,
+            @RequestParam("type") String type,
+            @RequestParam("age") Integer age,
+            @RequestParam("weight") float weight,
+            @RequestParam("height") float height,
+            @RequestParam("picture") MultipartFile file) {
+
+        Diabetic diabetic = new Diabetic();
+        diabetic.setName(name);
+        diabetic.setType(DiabeticType.valueOf(type));
+        diabetic.setAge(age);
+        diabetic.setWeight(weight);
+        diabetic.setHeight(height);
+
+        if (!file.isEmpty()) {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            String uploadDir = "user-photos/";
+            String uploadDir = "src/main/resources/static/" +  "img/";
 
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
+            try {
+                FileUploadUtil.saveFile(uploadDir, fileName, file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-            diabetic.setPicture(uploadDir + fileName);
-
-            diabeticService.save(diabetic);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            diabetic.setPicture(fileName);
         }
+
+        diabeticService.save(diabetic);
         return "redirect:/";
     }
 
-//    @PostMapping("/save")
-//    public <MultipartFile> String saveEmployee(@ModelAttribute("diabetic") Diabetic diabetic,
-//                                               @RequestParam("picture") MultipartFile picture) {
-//        diabetic.setPicture((String) picture);
-//        diabeticService.save(diabetic);
-//        return "redirect:/";
-//    }
-
     @GetMapping("/showFormForUpdate/{id}")
-    public String updateForm(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("diabetic", diabeticService.getById(id));
+    public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
+        Diabetic diabetic = diabeticService.getDiabeticById(id);
+        model.addAttribute("diabetic", diabetic);
         return "update";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateDiabetic(@PathVariable(value = "id") long id, @ModelAttribute("diabetic") Diabetic diabetic) {
+        diabetic.setId(id);
+        diabeticService.save(diabetic);
+        return "redirect:/";
     }
 
     @GetMapping("/deleteDiabetic/{id}")
     public String deleteThroughId(@PathVariable(value = "id") Long id) {
         diabeticService.delete(id);
         return "redirect:/";
-
     }
 
 }

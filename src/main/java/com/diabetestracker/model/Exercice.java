@@ -3,6 +3,8 @@ package com.diabetestracker.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,9 +22,9 @@ public class Exercice {
     private Long levelMin;
     private String note;
     private String picture;
-    @OneToOne(mappedBy = "exercice")
+    @OneToMany
     @ToString.Exclude
-    private Program program;
+    private List<Program> program;
 
 
 }
