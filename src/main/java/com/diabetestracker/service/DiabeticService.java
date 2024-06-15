@@ -16,6 +16,9 @@ public class DiabeticService {
 
     @Autowired
     private DiabeticRepository diabeticRepository;
+    public Diabetic update(Diabetic diabetic) {
+        return diabeticRepository.save(diabetic);
+    }
 
     public List<Diabetic> getAll() {
         return diabeticRepository.findAll();

@@ -62,6 +62,12 @@ public class DiabeticController {
         model.addAttribute("diabetic", diabeticService.getById(id));
         return "update";
     }
+    @PostMapping("/update")
+    public String updateDiabetic(@ModelAttribute("diabetic") Diabetic diabetic) {
+        diabeticService.update(diabetic);
+        return "redirect:/";
+    }
+
 
     @GetMapping("/deleteDiabetic/{id}")
     public String deleteThroughId(@PathVariable(value = "id") Long id) {
