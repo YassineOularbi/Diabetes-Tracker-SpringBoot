@@ -7,6 +7,7 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
+
 </head>
 <body>
 <div class="container my-2" align="center">
@@ -32,9 +33,11 @@
             <td th:text="${diabetic.type}"></td>
             <td th:text="${diabetic.age}"></td>
             <td>
-                <img th:if="${diabetic.picture != null}"
-                     th:src="${diabetic.picture}"
-                     alt="Diabetic Picture" style="max-width: 100px; max-height: 100px;">
+                <p th:text="${diabetic.picture}"></p>
+                <img th:src="@{/img/${diabetic.picture}}"
+                     alt=" Picture" style="max-width: 100px; max-height: 100px;">
+                <img th:src="@{/img/ol.png}"
+                     alt=" Picture" style="max-width: 100px; max-height: 100px;">
             </td>
             <td th:text="${diabetic.height}"></td>
             <td th:text="${diabetic.weight}"></td>

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,51 +41,64 @@ public class ProgramController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Program> getProgramById(@PathVariable Long id) {
-        Optional<Program> program = programService.getProgramById(id);
-        return program.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public String getProgramById(@PathVariable Long id, Model model) {
+        model.addAttribute("program", programService.getProgramById(id));
+        return "program";
     }
 
     @GetMapping("/addnew/{diabeticId}")
     public String addNewProgram(@PathVariable Long diabeticId, Model model) {
-        Program program = new Program();
 
         Diabetic diabetic = diabeticService.getById(diabeticId);
         Glycemie glycemie = glycemieService.getLatestGlycemie();
         List<Exercice> exercices = exerciceService.getAllExercices();
 
-        program.setGlycemie(glycemie);
-        program.setDiabetic(diabetic);
-
+        model.addAttribute("diabetic", diabetic);
+        model.addAttribute("glycemie", glycemie);
         model.addAttribute("exercices", exercices);
-        model.addAttribute("program", program);
+        model.addAttribute("program", new Program());
 
         return "add-program";
     }
 
-
-
     @PostMapping("/save")
-    public String saveProgram(@ModelAttribute("program") Program program) {
+    public String saveProgram(@RequestParam("diabeticId") Long diabeticId,
+                              @RequestParam("exercice") Long exerciceId,
+                              @RequestParam("duration") Integer durationInMinutes,
+                              @RequestParam("bloodSugarBefore") Float bloodSugarBefore,
+                              @RequestParam("bloodSugarAfter") Float bloodSugarAfter) {
+        Program program = new Program();
+
+        Diabetic diabetic = diabeticService.getById(diabeticId);
+        Exercice exercice = exerciceService.getExerciceById(exerciceId);
+        Glycemie glycemie = glycemieService.getLatestGlycemie();
+
+        program.setDiabetic(diabetic);
+        program.setExercice(exercice);
+        program.setGlycemie(glycemie);
+        program.setDuration(new Time(durationInMinutes * 60 * 1000L));
+        program.setBloodSugarBefore(bloodSugarBefore);
+        program.setBloodSugarAfter(bloodSugarAfter);
+
         programService.saveProgram(program);
-        return "redirect:/programs";
+        return "redirect:/";
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Program> updateProgram(@PathVariable Long id, @RequestBody Program updatedProgram) {
-        Optional<Program> program = programService.getProgramById(id);
-        if (program.isPresent()) {
+        Program program = programService.getProgramById(id);
+        if (program != null) {
             updatedProgram.setId(id);
             return ResponseEntity.ok(programService.saveProgram(updatedProgram));
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProgram(@PathVariable Long id) {
-        if (programService.getProgramById(id).isPresent()) {
+        if (programService.getProgramById(id) != null) {
             programService.deleteProgram(id);
             return ResponseEntity.noContent().build();
         } else {

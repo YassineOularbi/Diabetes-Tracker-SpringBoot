@@ -1,6 +1,7 @@
 package com.diabetestracker.service;
 
 import com.diabetestracker.exception.ExerciceNotFoundException;
+import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.model.Exercice;
 import com.diabetestracker.repository.ExerciceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,8 @@ public class ExerciceService {
         return exerciceRepository.findAll();
     }
 
-    public Optional<Exercice> getExerciceById(Long id) {
-        return exerciceRepository.findById(id);
+    public Exercice getExerciceById(Long id) {
+        return exerciceRepository.findById(id).orElse(null);
     }
 
-    public Exercice saveExercice(Exercice exercice) {
-        return exerciceRepository.save(exercice);
-    }
-
-    public void deleteExercice(Long id) {
-        exerciceRepository.findById(id).orElseThrow(ExerciceNotFoundException::new);
-        exerciceRepository.deleteById(id);
-    }
 }
