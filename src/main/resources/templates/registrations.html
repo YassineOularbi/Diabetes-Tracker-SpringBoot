@@ -36,8 +36,9 @@
                    onclick="return confirm('Are you sure you want to delete this glycemie?')">Delete</a>
             </td>
             <td>
-                <a th:href="@{/conseil/viewConseil/{id}(id=${glycemie.id})}" class="btn btn-info">View Advice</a>
+                <a th:href="@{/glycemie/conseil/{level}(level=${glycemie.level})}" class="btn btn-info">View Advice</a>
             </td>
+
         </tr>
         </tbody>
     </table>
