@@ -72,8 +72,8 @@ public class ProgramController {
         Glycemie glycemie = glycemieService.getLatestGlycemie();
 
         program.setDiabetic(diabetic);
-        programService.setExercice(program, exercice); // Définition de l'exercice
-        programService.setGlycemie(program, glycemie); // Définition de la glycémie
+        programService.setExercice(program, exercice);
+        programService.setGlycemie(program, glycemie);
         program.setDuration(new Time(durationInMinutes * 60 * 1000L));
         program.setBloodSugarBefore(bloodSugarBefore);
         program.setBloodSugarAfter(bloodSugarAfter);

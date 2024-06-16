@@ -137,4 +137,27 @@ document.addEventListener("DOMContentLoaded", function () {
      } else {
     table.style.display = "none";
 }
+
+
+}
+
+
+
+//report
+function exportPDF() {
+    const doc = new jsPDF();
+
+    doc.setProperties({
+        title: 'Diabetic Report',
+        subject: 'Diabetic Information',
+        author: 'Your Name',
+        keywords: 'diabetic, report',
+        creator: 'Your Organization'
+    });
+
+    doc.html(document.querySelector("html"), {
+        callback: function (doc) {
+            doc.save("diabetic_report.pdf");
+        }
+    });
 }
