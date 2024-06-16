@@ -10,6 +10,8 @@ import com.diabetestracker.service.GlycemieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -40,8 +42,14 @@ public class GlycemiaController {
         modelMap.addAttribute("listGlycemies", glycemies);
 
         // Convert Glycemie data to JSON for Chart.js
-        String glycemiaDataJson = new ObjectMapper().writeValueAsString(glycemies);
-        modelMap.addAttribute("glycemiaData", glycemiaDataJson);
+        List<String> labels = new ArrayList<>();
+        List<Double> data = new ArrayList<>();
+        for (Glycemie glycemie : glycemies) {
+            labels.add(glycemie.getDate().toString());
+            data.add(glycemie.getValue());
+        }
+        modelMap.addAttribute("labels", new ObjectMapper().writeValueAsString(labels));
+        modelMap.addAttribute("data", new ObjectMapper().writeValueAsString(data));
 
         return "registrations";
     }
@@ -50,7 +58,7 @@ public class GlycemiaController {
     public String showNewGlycemieForm(@PathVariable Long diabeticId, Model model) {
         Glycemie glycemie = new Glycemie();
         Diabetic diabetic = diabeticService.getById(diabeticId);
-        glycemie.setDiabetic(diabetic); // Set diabetic
+        glycemie.setDiabetic(diabetic);
         model.addAttribute("glycemie", glycemie);
         return "addGlycemie";
     }
@@ -76,9 +84,11 @@ public class GlycemiaController {
 
     @GetMapping("/delete/{id}")
     public String deleteGlycemie(@PathVariable Long id) {
-        Diabetic glycemie = glycemieService.deleteGlycemieById(id);
-        return "redirect:/glycemie/glycemie/" + glycemie.getDiabetic().getId();
+        glycemieService.deleteGlycemieById(id);
+        return "redirect:/glycemie";
     }
+
+
 
     @GetMapping("/glycemie/{id}")
     public String viewGlycemies(@PathVariable Long id, Model model) {
@@ -99,59 +109,42 @@ public class GlycemiaController {
         return "viewConseil";
     }
 
-    @GetMapping("/chart")
-    public String chart(Model model) {
-        List<Glycemie> readings = glycemieService.getAllGlycemies();
-        List<String> labels = new ArrayList<>();
-        List<Integer> data = new ArrayList<>();
-
-        for (Glycemie reading : readings) {
-            labels.add(reading.getDate().toString());
-            data.add(reading.getLevel().ordinal()); // Assuming Level enum has an ordinal value
-        }
-
-        model.addAttribute("labels", labels);
-        model.addAttribute("data", data);
-        return "chart";
-    }
-
     @GetMapping("/chartDisplay")
     public String getGlucoseReadings(
-            @RequestParam(value = "view", required = false, defaultValue = "week") String view,
-            @RequestParam(value = "year", required = false) Integer year,
-            @RequestParam(value = "month", required = false) Integer month,
-            @RequestParam(value = "week", required = false) Integer week,
-            Model model) {
+            @RequestParam(value = "view", required = false, defaultValue = "all") String view,
+            Model model) throws JsonProcessingException {
 
-        List<Glycemie> readings;
-
-        switch (view) {
-            case "month":
-                readings = glycemieService.getAllGroupedByMonth();
-                break;
-            case "year":
-                readings = glycemieService.getAllGroupedByYear();
-                break;
-            case "specificMonth":
-                readings = glycemieService.getByYearAndMonth(year, month);
-                break;
-            case "specificWeek":
-                readings = glycemieService.getByYearAndWeek(year, week);
-                break;
-            default:
-                readings = glycemieService.getAllGroupedByWeek();
-        }
-
+        List<Glycemie> glycemies = glycemieService.getAllGlycemies();
         List<String> labels = new ArrayList<>();
-        List<Integer> data = new ArrayList<>();
+        List<Double> data = new ArrayList<>();
 
-        for (Glycemie reading : readings) {
-            labels.add(reading.getDate().toString());
-            data.add(reading.getLevel().ordinal()); // Assuming Level enum has an ordinal value
+        if (view.equals("week")) {
+            LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
+            for (Glycemie glycemie : glycemies) {
+                if (glycemie.getDate().isAfter(oneWeekAgo)) {
+                    labels.add(glycemie.getDate().toString());
+                    data.add(glycemie.getValue());
+                }
+            }
+        } else if (view.equals("month")) {
+            LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
+            for (Glycemie glycemie : glycemies) {
+                if (glycemie.getDate().isAfter(oneMonthAgo)) {
+                    labels.add(glycemie.getDate().toString());
+                    data.add(glycemie.getValue());
+                }
+            }
+        } else {
+            for (Glycemie glycemie : glycemies) {
+                labels.add(glycemie.getDate().toString());
+                data.add(glycemie.getValue());
+            }
         }
 
-        model.addAttribute("labels", labels);
-        model.addAttribute("data", data);
-        return "index";
+        model.addAttribute("listGlycemies", glycemies);
+        model.addAttribute("labels", new ObjectMapper().writeValueAsString(labels));
+        model.addAttribute("data", new ObjectMapper().writeValueAsString(data));
+
+        return "registrations";
     }
 }

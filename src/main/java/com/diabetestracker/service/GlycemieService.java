@@ -65,4 +65,5 @@ public class GlycemieService {
     public List<Glycemie> getByYearAndMonth(int year, int month) {
         return GlycemieRepository.findByYearAndMonth(year, month);
     }
+
 }
