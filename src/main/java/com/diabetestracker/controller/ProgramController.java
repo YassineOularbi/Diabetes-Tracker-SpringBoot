@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/programs")
@@ -35,7 +34,7 @@ public class ProgramController {
     private DiabeticService diabeticService;
 
     @GetMapping("/all/{diabeticId}")
-    public String getAllPrograms(@PathVariable Long diabeticId,Model model) {
+    public String getAllPrograms(@PathVariable Long diabeticId, Model model) {
         model.addAttribute("programs", programService.getAllPrograms(diabeticId));
         return "program";
     }
@@ -48,7 +47,6 @@ public class ProgramController {
 
     @GetMapping("/addnew/{diabeticId}")
     public String addNewProgram(@PathVariable Long diabeticId, Model model) {
-
         Diabetic diabetic = diabeticService.getById(diabeticId);
         Glycemie glycemie = glycemieService.getLatestGlycemie();
         List<Exercice> exercices = exerciceService.getAllExercices();
@@ -74,14 +72,14 @@ public class ProgramController {
         Glycemie glycemie = glycemieService.getLatestGlycemie();
 
         program.setDiabetic(diabetic);
-        program.setExercice(exercice);
-        program.setGlycemie(glycemie);
+        programService.setExercice(program, exercice); // Définition de l'exercice
+        programService.setGlycemie(program, glycemie); // Définition de la glycémie
         program.setDuration(new Time(durationInMinutes * 60 * 1000L));
         program.setBloodSugarBefore(bloodSugarBefore);
         program.setBloodSugarAfter(bloodSugarAfter);
 
         programService.saveProgram(program);
-        return "redirect:/";
+        return "redirect:/programs/all/" + diabeticId;
     }
 
     @PutMapping("/{id}")
@@ -93,7 +91,6 @@ public class ProgramController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
 
     @DeleteMapping("/{id}")

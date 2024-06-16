@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+//@ToString
 @Entity
 public class Glycemie {
     @Id
@@ -38,9 +38,6 @@ public class Glycemie {
     @ManyToOne
     private Diabetic diabetic;
 
-    @OneToMany(mappedBy = "glycemie")
-    @ToString.Exclude
-    private List<Program> program;
     @OneToMany(mappedBy = "glycemie")
     private List<Repas> repas;
 

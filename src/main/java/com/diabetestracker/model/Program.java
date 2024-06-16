@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
-import java.util.List;
+import java.time.LocalDateTime; // Import ajouté
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"diabetic", "exercice", "glycemie"})
+//@ToString(exclude = {"diabetic", "exercice", "glycemie"})
 @Entity
 public class Program {
     @Id
@@ -19,16 +19,27 @@ public class Program {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "diabetic_id")
     private Diabetic diabetic;
 
-    @ManyToOne
-    private Exercice exercice;
-
-    @ManyToOne
-    private Glycemie glycemie;
-
+    private String name;
     private Time duration;
     private Float bloodSugarBefore;
     private Float bloodSugarAfter;
 
+    private LocalDateTime date; 
+
+    @ManyToOne
+    @JoinColumn(name = "report_id")
+    private Report report;
+
+
+    public void setExercice(Exercice exercice) {
+    }
+
+    public void setGlycemie(Glycemie glycemie) {
+    }
 }
+
+
+

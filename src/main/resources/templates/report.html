@@ -1,66 +1,198 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .section-toggle-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .section-toggle-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-<h1>Custom Report</h1>
-<h2>Diabetic Information</h2>
-<p>Name: <span th:text="${report.diabetic.name}"></span></p>
-<p>Age: <span th:text="${report.diabetic.age}"></span></p>
+<div class="container">
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Diabetic Information</h2>
+            <button class="section-toggle-btn" onclick="toggleTable('diabeticTable')">Show</button>
+        </div>
+        <div class="table-container" id="diabeticTable" style="display: none;">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <td th:text="${report.diabetic.name}"></td>
+                </tr>
+                <tr>
+                    <th>Age</th>
+                    <td th:text="${report.diabetic.age}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-<h2>Glycemia Readings</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Date Time</th>
-        <th>Value</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="reading : ${report.glycemiaReadings}">
-        <td th:text="${#temporals.format(reading.date, 'yyyy-MM-dd HH:mm')}"></td>
-        <td th:text="${reading.value}"></td>
-    </tr>
-    </tbody>
-</table>
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Glycemia Readings</h2>
+            <button class="section-toggle-btn" onclick="toggleTable('glycemiaTable')">Show</button>
+        </div>
+        <div class="table-container" id="glycemiaTable" style="display: none;">
+            <table>
+                <thead>
+                <tr>
+                    <th>Date Time</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reading : ${report.glycemiaReadings}">
+                    <td th:text="${#temporals.format(reading.date, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${reading.value}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<h2>Meals</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Date Time</th>
-        <th>Description</th>
-        <th>Carbohydrates</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="meal : ${report.meals}">
-        <td th:text="${#temporals.format(meal.date, 'yyyy-MM-dd HH:mm')}"></td>
-        <td th:text="${meal.description}"></td>
-        <td th:text="${meal.carbohydrates}"></td>
-    </tr>
-    </tbody>
-</table>
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Meals</h2>
+            <button class="section-toggle-btn" onclick="toggleTable('mealsTable')">Show</button>
+        </div>
+        <div class="table-container" id="mealsTable" style="display: none;">
+            <table>
+                <thead>
+                <tr>
+                    <th>Date Time</th>
+                    <th>Description</th>
+                    <th>Carbohydrates</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="meal : ${report.meals}">
+                    <td th:text="${#temporals.format(meal.date, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${meal.description}"></td>
+                    <td th:text="${meal.carbohydrates}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<h2>Exercises</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Date Time</th>
-        <th>Type</th>
-        <th>Duration (minutes)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="exercise : ${report.exercises}">
-        <td th:text="${#temporals.format(exercise.date, 'yyyy-MM-dd HH:mm')}"></td>
-        <td th:text="${exercise.type}"></td>
-        <td th:text="${exercise.durationMinutes}"></td>
-    </tr>
-    </tbody>
-</table>
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Programs</h2>
+            <button class="section-toggle-btn" onclick="toggleTable('programsTable')">Show</button>
+        </div>
+        <div class="table-container" id="programsTable" style="display: none;">
+            <table>
+                <thead>
+                <tr>
+                    <th>Date Time</th>
+                    <th>Name</th>
+                    <th>Duration (minutes)</th>
+                    <th>Blood Sugar Before</th>
+                    <th>Blood Sugar After</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="program : ${report.programs}">
+                    <td th:text="${program.date}"></td>
+                    <td th:text="${program.name}"></td>
+                    <td th:text="${program.duration}"></td>
+                    <td th:text="${program.bloodSugarBefore}"></td>
+                    <td th:text="${program.bloodSugarAfter}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleTable(tableId) {
+        var table = document.getElementById(tableId);
+        if (table.style.display === "none") {
+            table.style.display = "table";
+        } else {
+            table.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>

@@ -29,5 +29,5 @@ public class Report {
     private List<Repas> meals;
 
     @OneToMany(mappedBy = "report")
-    private List<Exercice> exercises;
+    private List<Program> programs;
 }

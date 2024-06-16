@@ -1,6 +1,8 @@
 package com.diabetestracker.service;
 
 //import com.diabetestracker.dto.ProgramDTO;
+import com.diabetestracker.model.Exercice;
+import com.diabetestracker.model.Glycemie;
 import com.diabetestracker.model.Program;
 import com.diabetestracker.repository.ProgramRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +30,13 @@ public class ProgramService {
 
     public void deleteProgram(Long id) {
         programRepository.deleteById(id);
+    }
+    public void setExercice(Program program, Exercice exercice) {
+        program.setExercice(exercice);
+    }
+
+
+    public void setGlycemie(Program program, Glycemie glycemie) {
+        program.setGlycemie(glycemie);
     }
 }
