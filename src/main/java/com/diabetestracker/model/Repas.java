@@ -2,9 +2,15 @@ package com.diabetestracker.model;
 
 import com.fasterxml.jackson.databind.deser.UnresolvedId;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 public class Repas {
     @Id
