@@ -24,4 +24,7 @@ public class ExerciceService {
         return exerciceRepository.findById(id).orElse(null);
     }
 
+    public List<Exercice> getExercicesByDiabeticId(Long diabeticId) {
+        return exerciceRepository.findByDiabetic_Id(diabeticId);
+    }
 }

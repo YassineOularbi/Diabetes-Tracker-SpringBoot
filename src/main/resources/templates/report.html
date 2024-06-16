@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Report</title>
+</head>
+<body>
+<h1>Custom Report</h1>
+<h2>Diabetic Information</h2>
+<p>Name: <span th:text="${report.diabetic.name}"></span></p>
+<p>Age: <span th:text="${report.diabetic.age}"></span></p>
+
+<h2>Glycemia Readings</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Date Time</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="reading : ${report.glycemiaReadings}">
+        <td th:text="${#temporals.format(reading.date, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${reading.value}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Meals</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Date Time</th>
+        <th>Description</th>
+        <th>Carbohydrates</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="meal : ${report.meals}">
+        <td th:text="${#temporals.format(meal.date, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${meal.description}"></td>
+        <td th:text="${meal.carbohydrates}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Exercises</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Date Time</th>
+        <th>Type</th>
+        <th>Duration (minutes)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="exercise : ${report.exercises}">
+        <td th:text="${#temporals.format(exercise.date, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${exercise.type}"></td>
+        <td th:text="${exercise.durationMinutes}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

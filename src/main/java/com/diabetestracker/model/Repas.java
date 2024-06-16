@@ -27,7 +27,9 @@ public class Repas {
     @JoinColumn(name = "glycemie_id")
     private Glycemie glycemie;
 
-
+    @ManyToOne
+    @JoinColumn(name = "report_id")
+    private Report report;
     // Getters and setters
 
     public Glycemie getGlycemie() {

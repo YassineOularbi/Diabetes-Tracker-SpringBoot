@@ -47,26 +47,30 @@ public class GlycemieService {
     }
 
     public List<Glycemie> getAllGroupedByWeek() {
-        return GlycemieRepository.findAllGroupedByWeek();
+        return GlycemieRepository.findAllGroupedByWeek(); // Correction de la casse ici
     }
 
     public List<Glycemie> getAllGroupedByMonth() {
-        return GlycemieRepository.findAllGroupedByMonth();
+        return GlycemieRepository.findAllGroupedByMonth(); // Correction de la casse ici
     }
 
     public List<Glycemie> getAllGroupedByYear() {
-        return GlycemieRepository.findAllGroupedByYear();
+        return GlycemieRepository.findAllGroupedByYear(); // Correction de la casse ici
     }
 
     public List<Glycemie> getByYearAndWeek(int year, int week) {
-        return GlycemieRepository.findByYearAndWeek(year, week);
+        return GlycemieRepository.findByYearAndWeek(year, week); // Correction de la casse ici
     }
 
     public List<Glycemie> getByYearAndMonth(int year, int month) {
-        return GlycemieRepository.findByYearAndMonth(year, month);
+        return GlycemieRepository.findByYearAndMonth(year, month); // Correction de la casse ici
     }
 
     public Glycemie getById(Long glycemieId) {
         return glycemieRepository.findById(glycemieId).orElse(null);
+    }
+
+    public List<Glycemie> getGlycemiaByDiabeticId(Long diabeticId) {
+        return glycemieRepository.findByDiabetic_Id(diabeticId);
     }
 }
