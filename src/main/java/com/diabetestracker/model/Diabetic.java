@@ -1,11 +1,9 @@
 package com.diabetestracker.model;
 
 import com.diabetestracker.enums.DiabeticType;
-import com.fasterxml.jackson.databind.deser.UnresolvedId;
 import lombok.*;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Getter
@@ -36,11 +34,11 @@ public class Diabetic {
     @OneToMany(mappedBy = "diabetic", cascade = CascadeType.REMOVE)
     private List<Glycemie> glycemies;
 
+    @OneToMany(mappedBy = "diabetic")
+    private List<Report> reports;
+
+    // Getters and setters
     public List<Glycemie> getAllGlycemies() {
         return this.glycemies;
-    }
-
-    public UnresolvedId getDiabetic() {
-        return null;
     }
 }

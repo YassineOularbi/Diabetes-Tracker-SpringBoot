@@ -32,6 +32,10 @@ public class Glycemie {
     private LocalDateTime date;
 
     @ManyToOne
+    @JoinColumn(name = "report_id")
+    private Report report;
+
+    @ManyToOne
     private Diabetic diabetic;
 
     @OneToMany(mappedBy = "glycemie")

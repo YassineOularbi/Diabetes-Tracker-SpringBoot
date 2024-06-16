@@ -12,19 +12,22 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
-public class Exercice {
+public class Report {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private Long sugarEffect;
-    private Long levelMax;
-    private Long levelMin;
-    private String note;
-    private String picture;
-    @ManyToOne
-    private Report report;
+
     @ManyToOne
     @JoinColumn(name = "diabetic_id")
     private Diabetic diabetic;
+
+    @OneToMany(mappedBy = "report")
+    private List<Glycemie> glycemiaReadings;
+
+    @OneToMany(mappedBy = "report")
+    private List<Repas> meals;
+
+    @OneToMany(mappedBy = "report")
+    private List<Exercice> exercises;
 }
