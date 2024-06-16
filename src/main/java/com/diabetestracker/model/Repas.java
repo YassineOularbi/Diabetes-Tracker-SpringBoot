@@ -1,6 +1,5 @@
 package com.diabetestracker.model;
 
-import com.fasterxml.jackson.databind.deser.UnresolvedId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,20 +23,18 @@ public class Repas {
     @JoinColumn(name = "diabetic_id")
     private Diabetic diabetic;
 
+    @ManyToOne
+    @JoinColumn(name = "glycemie_id")
+    private Glycemie glycemie;
 
-    public UnresolvedId getDiabetic() {
-        return null;
+
+    // Getters and setters
+
+    public Glycemie getGlycemie() {
+        return glycemie;
     }
 
-    public void setDiabetic(Diabetic diabetic) {
-    }
-
-    public void setDescription(String description) {
-    }
-
-    public void setDate(LocalDateTime dateTime) {
-    }
-
-    public void setCarbohydrates(double carbohydrates) {
+    public void setGlycemie(Glycemie glycemie) {
+        this.glycemie = glycemie;
     }
 }

@@ -1,11 +1,11 @@
 package com.diabetestracker.controller;
 
 import com.diabetestracker.model.Diabetic;
+import com.diabetestracker.model.Glycemie;
 import com.diabetestracker.model.Repas;
 import com.diabetestracker.service.DiabeticService;
+import com.diabetestracker.service.GlycemieService;
 import com.diabetestracker.service.RepasService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,29 +25,42 @@ public class RepasController {
     @Autowired
     private DiabeticService diabeticService;
 
+    @Autowired
+    private GlycemieService glycemieService;
+
     @GetMapping
-    public String listRepas(ModelMap modelMap) throws JsonProcessingException {
+    public String listRepas(ModelMap modelMap) {
         List<Repas> repasList = repasService.getAllRepas();
         modelMap.addAttribute("listRepas", repasList);
-        String repasDataJson = new ObjectMapper().writeValueAsString(repasList);
-        modelMap.addAttribute("repasData", repasDataJson);
-        return "registrations";
+        return "listRepas";
     }
 
-    @GetMapping("/new/{diabeticId}")
-    public String showNewRepasForm(@PathVariable Long diabeticId, Model model) {
-        Repas repas = new Repas();
-        Diabetic diabetic = diabeticService.getDiabeticById(diabeticId);
-        repas.setDiabetic(diabetic);
-        model.addAttribute("repas", repas);
-        return "addRepas";
-    }
+//    @GetMapping("/new/{diabeticId}")
+//    public String showNewRepasForm(@PathVariable Long diabeticId, Model model) {
+//        Repas repas = new Repas();
+//        Diabetic diabetic = diabeticService.getById(diabeticId);
+//        model.addAttribute("repas", repas);
+//        model.addAttribute("diabeticId", diabeticId);
+//        return "addRepas";
+//    }
+@GetMapping("/new/{diabeticId}")
+public String showNewRepasForm(@PathVariable Long diabeticId, Model model) {
+    Repas repas = new Repas();
+    Diabetic diabetic = diabeticService.getById(diabeticId);
+    Glycemie glycemie = glycemieService.getLatestGlycemie();
+    model.addAttribute("repas", repas);
+    model.addAttribute("diabetic", diabetic);
+    model.addAttribute("glycemie", glycemie);
+    return "addRepas";
+}
+
 
     @PostMapping("/new")
     public String saveRepas(@RequestParam("description") String description,
                             @RequestParam("carbohydrates") double carbohydrates,
                             @RequestParam("date") String date,
                             @RequestParam("diabeticId") Long diabeticId,
+                            @RequestParam("glycemieId") Long glycemieId,
                             Model model) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
@@ -55,15 +68,28 @@ public class RepasController {
         repas.setDescription(description);
         repas.setCarbohydrates(carbohydrates);
         repas.setDate(dateTime);
-        Diabetic diabetic = diabeticService.getDiabeticById(diabeticId);
+        Diabetic diabetic = diabeticService.getById(diabeticId);
         repas.setDiabetic(diabetic);
+        if (glycemieId != null) {
+            Glycemie glycemie = glycemieService.getById(glycemieId);
+            repas.setGlycemie(glycemie);
+        }
         repasService.saveRepas(repas);
         return "redirect:/repas";
     }
+
 
     @GetMapping("/delete/{id}")
     public String deleteRepas(@PathVariable Long id) {
         repasService.deleteRepasById(id);
         return "redirect:/repas";
+    }
+
+    @GetMapping("/byGlycemie/{glycemieId}")
+    public String viewMealsByGlycemie(@PathVariable Long glycemieId, Model model) {
+        Glycemie glycemie = glycemieService.getById(glycemieId);
+        List<Repas> repasList = glycemie.getRepas();
+        model.addAttribute("listRepas", repasList);
+        return "listRepas";
     }
 }

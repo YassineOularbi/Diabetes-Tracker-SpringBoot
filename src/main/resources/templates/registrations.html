@@ -69,6 +69,12 @@
             <td>
                 <a th:href="@{/glycemie/conseil/{level}(level=${glycemie.level})}" class="btn btn-info">View Advice</a>
             </td>
+            <td>
+                <a th:href="@{/repas/byGlycemie/{glycemieId}(glycemieId=${glycemie.id})}" class="btn btn-primary">View Meals</a>
+                <a th:href="@{/repas/new/{diabeticId}(diabeticId=${diabetic.id})}" class="btn btn-primary">Add Meal</a>
+
+            </td>
+
         </tr>
         </tbody>
     </table>
