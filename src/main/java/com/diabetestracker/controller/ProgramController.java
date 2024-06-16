@@ -50,7 +50,7 @@ public class ProgramController {
     public String addNewProgram(@PathVariable Long diabeticId, Model model) {
 
         Diabetic diabetic = diabeticService.getById(diabeticId);
-        Glycemie glycemie = glycemieService.getLatestGlycemie();
+        Glycemie glycemie = glycemieService.getLatestGlycemie(diabeticId);
         List<Exercice> exercices = exerciceService.getAllExercices();
 
         model.addAttribute("diabetic", diabetic);
@@ -71,7 +71,7 @@ public class ProgramController {
 
         Diabetic diabetic = diabeticService.getById(diabeticId);
         Exercice exercice = exerciceService.getExerciceById(exerciceId);
-        Glycemie glycemie = glycemieService.getLatestGlycemie();
+        Glycemie glycemie = glycemieService.getLatestGlycemie(diabeticId);
 
         program.setDiabetic(diabetic);
         program.setExercice(exercice);

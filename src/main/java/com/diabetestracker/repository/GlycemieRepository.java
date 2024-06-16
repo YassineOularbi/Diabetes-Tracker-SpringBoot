@@ -43,7 +43,8 @@ public interface GlycemieRepository extends JpaRepository<Glycemie, Long> {
 
     List<Glycemie> findAllByDate(LocalDateTime date);
 
-    Glycemie findTopByOrderByDateDesc();
+    @Query("SELECT  g FROM  Glycemie g WHERE g.diabetic.id = :id")
+    Glycemie findTopByOrderByDateDesc(Long id);
 }
 
 

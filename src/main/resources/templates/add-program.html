@@ -7,18 +7,185 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
+    <style>
+        /* Typography and Colors */
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        h2 {
+            color: #0f8b97;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            padding: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #0f8b97;
+            box-shadow: 0 0 10px rgba(12, 139, 150, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #15a8b6, #0f8b97);
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #0f8b97, rgba(12, 139, 150, 0.5));
+            transform: translateY(-2px);
+        }
+
+        /* Exercise Card Styling */
+        .exercise-card {
+            perspective: 1000px;
+            margin: 10px;
+            display: inline-block;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .exercise-card-inner {
+            position: relative;
+            width: 200px;
+            height: 250px;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .exercise-card:hover .exercise-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .exercise-card-front, .exercise-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .exercise-card-front {
+            background: #fff;
+        }
+
+        .exercise-card-back {
+            background: #f8f9fa;
+            transform: rotateY(180deg);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .exercise-card img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+        }
+
+        .exercise-card.selected .exercise-card-inner {
+            border: 2px solid #0f8b97;
+        }
+
+        /* Input focus animation */
+        .form-control:focus {
+            animation: pulse 0.3s;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(12, 139, 150, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(12, 139, 150, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(12, 139, 150, 0);
+            }
+        }
+
+        /* Custom styles for the carousel */
+        .carousel-inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-item {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-control-prev, .carousel-control-next {
+            color: #0f8b97;
+            background-color: rgba(12, 139, 150, 0);
+            border-color: rgba(255, 255, 255, 0);
+            width: 5%;
+        }
+    </style>
 </head>
 <body>
 <div class="container my-4">
     <h2>Add New Program</h2>
     <form th:action="@{/programs/save}" th:object="${program}" method="post">
         <input type="hidden" id="diabeticId" th:name="diabeticId" th:value="${diabetic.id}" required>
+
+        <!-- Exercise Selection as Carousel Cards -->
         <div class="form-group">
             <label for="exercice">Select Exercise:</label>
-            <select class="form-control" id="exercice" th:field="*{exercice}">
-                <option th:each="exercice : ${exercices}" th:value="${exercice.id}" th:data-sugar-effect="${exercice.sugarEffect}" th:text="${exercice.name}"></option>
-            </select>
+            <div id="exerciseCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" role="listbox" id="exercises">
+                    <div th:each="exercice, iterStat : ${exercices}" class="carousel-item" th:classappend="${iterStat.index == 0}? 'active'">
+                        <div class="exercise-card" th:data-sugar-effect="${exercice.sugarEffect}" th:data-id="${exercice.id}">
+                            <div class="exercise-card-inner">
+                                <div class="exercise-card-front">
+                                    <img th:src="@{${exercice.picture}}" alt="Exercise Image">
+                                    <h5 th:text="${exercice.name}"></h5>
+                                </div>
+                                <div class="exercise-card-back">
+                                    <h5 th:text="${exercice.name}"></h5>
+                                    <p th:text="${exercice.note}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <input type="hidden" id="exercice" th:field="*{exercice}">
         </div>
+
         <div class="form-group">
             <label for="sugarEffect">Sugar Effect:</label>
             <input type="number" class="form-control" id="sugarEffect" readonly>
@@ -41,34 +208,56 @@
 
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        var exerciceSelect = document.getElementById('exercice');
+        var exerciseCards = document.querySelectorAll('.exercise-card');
+        var exerciceInput = document.getElementById('exercice');
         var sugarEffectInput = document.getElementById('sugarEffect');
         var durationInput = document.getElementById('duration');
         var bloodSugarBeforeInput = document.getElementById('bloodSugarBefore');
         var bloodSugarAfterInput = document.getElementById('bloodSugarAfter');
 
         function updateSugarEffect() {
-            var selectedOption = exerciceSelect.options[exerciceSelect.selectedIndex];
-            var sugarEffectPer30Min = parseFloat(selectedOption.getAttribute('data-sugar-effect'));
-            var duration = parseFloat(durationInput.value);
+            var selectedCard = document.querySelector('.exercise-card.selected');
+            if (selectedCard) {
+                var sugarEffectPer30Min = parseFloat(selectedCard.getAttribute('data-sugar-effect'));
+                var duration = parseFloat(durationInput.value);
 
-            if (isNaN(duration) || duration < 30) {
-                duration = 30;
+                if (isNaN(duration) || duration < 30) {
+                    duration = 30;
+                }
+
+                var totalSugarEffect = (duration / 30) * sugarEffectPer30Min;
+                sugarEffectInput.value = totalSugarEffect.toFixed(2);
+
+                var bloodSugarBefore = parseFloat(bloodSugarBeforeInput.value);
+                var bloodSugarAfter = bloodSugarBefore - totalSugarEffect;
+                bloodSugarAfterInput.value = bloodSugarAfter.toFixed(2);
             }
-
-            var totalSugarEffect = (duration / 30) * sugarEffectPer30Min;
-            sugarEffectInput.value = totalSugarEffect.toFixed(2);
-
-            var bloodSugarBefore = parseFloat(bloodSugarBeforeInput.value);
-            var bloodSugarAfter = bloodSugarBefore - totalSugarEffect;
-            bloodSugarAfterInput.value = bloodSugarAfter.toFixed(2);
         }
 
-        exerciceSelect.addEventListener('change', updateSugarEffect);
+        exerciseCards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                exerciseCards.forEach(function(card) {
+                    card.classList.remove('selected');
+                });
+                card.classList.add('selected');
+                var exerciseId = card.getAttribute('data-id');
+                exerciceInput.value = exerciseId;
+                updateSugarEffect();
+            });
+        });
+
         durationInput.addEventListener('input', updateSugarEffect);
         updateSugarEffect();
     });
 </script>
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGaRWflJ3x0BxKAW8L5W8a7J8G"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+d7eE1i5KCmYcKVp3RT5a8eZqFz+3pCIp8fEXGbwSXQBSj6e8"
+        crossorigin="anonymous"></script>
 </body>
 </html>

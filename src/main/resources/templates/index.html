@@ -182,6 +182,12 @@
                 <a th:href="@{/programs/addnew/{id}(id=${diabetic.id})}" class="btn btn-success btn-sm">
                     <i class="fas fa-plus"></i> Add Program
                 </a>
+                <a th:href="@{/recipe/all/{id}(id=${diabetic.id})}" class="btn btn-info btn-sm mr-1">
+                    <i class="fas fa-list"></i> View Recipes
+                </a>
+                <a th:href="@{/recipe/add/{id}(id=${diabetic.id})}" class="btn btn-success btn-sm">
+                    <i class="fas fa-plus"></i> Add Recipe
+                </a>
             </td>
         </tr>
         </tbody>
@@ -192,7 +198,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card">
-                <img src="/img/program.jpg" class="card-img-top" alt="Program">
+                <img th:src="@{/img/programe.jpg}" class="card-img-top" alt="Program">
                 <div class="card-body">
                     <h5 class="card-title">Programs</h5>
                     <p class="card-text">View and manage programs for diabetics.</p>
@@ -202,7 +208,7 @@
         </div>
         <div class="col-md-4">
             <div class="card">
-                <img src="/img/meals.jpg" class="card-img-top" alt="Meals">
+                <img th:src="@{/img/food.webp}" class="card-img-top" alt="Meals">
                 <div class="card-body">
                     <h5 class="card-title">Meals</h5>
                     <p class="card-text">Explore meal plans for diabetics.</p>
@@ -212,44 +218,11 @@
         </div>
         <div class="col-md-4">
             <div class="card">
-                <img src="/img/advice.jpg" class="card-img-top" alt="Advice">
+                <img th:src="@{/img/advice.jpg}" class="card-img-top" alt="Advice">
                 <div class="card-body">
                     <h5 class="card-title">Advice</h5>
                     <p class="card-text">Get expert advice for managing diabetes.</p>
                     <a href="#" class="btn btn-primary"><i class="fas fa-comment-medical"></i> View Advice</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="card">
-                <img src="/img/exercise.jpg" class="card-img-top" alt="Exercise">
-                <div class="card-body">
-                    <h5 class="card-title">Exercise</h5>
-                    <p class="card-text">Discover exercise routines for diabetics.</p>
-                    <a href="#" class="btn btn-primary"><i class="fas fa-dumbbell"></i> View Exercises</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="/img/card.jpg" class="card-img-top" alt="Card">
-                <div class="card-body">
-                    <h5 class="card-title">zido xi  Card hna</h5>
-                    <p class="card-text">Additional card content.</p>
-                    <a href="#" class="btn btn-primary"><i class="fas fa-plus"></i> Additional Action</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="/img/card.jpg" class="card-img-top" alt="Card">
-                <div class="card-body">
-                    <h5 class="card-title">zido xi  Card hna</h5>
-                    <p class="card-text">Additional card content.</p>
-                    <a href="#" class="btn btn-primary"><i class="fas fa-plus"></i> Additional Action</a>
                 </div>
             </div>
         </div>

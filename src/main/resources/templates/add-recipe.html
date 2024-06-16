@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Recipe</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        h2 {
+            color: #0f8b97;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            padding: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-control:focus {
+            border-color: #0f8b97;
+            box-shadow: 0 0 10px rgba(12, 139, 150, 0.5);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #15a8b6, #0f8b97);
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #0f8b97, rgba(12, 139, 150, 0.5));
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+<div class="container my-4">
+    <h2>Add New Recipe</h2>
+    <form th:action="@{/recipe/save}" method="post">
+        <input type="hidden" name="diabeticId" th:value="${diabetic.id}" required>
+        <input type="hidden" name="glycemieId" th:value="${glycemie.id}" required>
+
+        <div class="form-group">
+            <label for="name">Recipe Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" id="description" name="description" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Image URL:</label>
+            <input type="text" class="form-control" id="image" name="image" required>
+        </div>
+
+        <div class="form-group">
+            <label for="exercice">Select Exercise:</label>
+            <select class="form-control" id="exercice" th:field="*{ingredients}">
+                <option th:each="ingredient : ${ingredients}" th:value="${ingredient.id}"  th:text="${ingredient.name}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

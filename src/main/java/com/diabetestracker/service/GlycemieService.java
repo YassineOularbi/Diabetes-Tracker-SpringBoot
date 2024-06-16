@@ -42,9 +42,9 @@ public class GlycemieService {
         return glycemieRepository.findAllByDate(date);
     }
 
-    public Glycemie getLatestGlycemie() {
+    public Glycemie getLatestGlycemie(Long id) {
 
-        return glycemieRepository.findTopByOrderByDateDesc();
+        return glycemieRepository.findTopByOrderByDateDesc(id);
     }
     public List<Glycemie> getAllGroupedByWeek() {
         return GlycemieRepository.findAllGroupedByWeek();
