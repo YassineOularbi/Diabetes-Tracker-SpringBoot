@@ -46,6 +46,7 @@ public interface GlycemieRepository extends JpaRepository<Glycemie, Long> {
     Glycemie findTopByOrderByDateDesc();
 
     List<Glycemie> findByDiabetic_Id(Long diabeticId);
+
 }
 
 

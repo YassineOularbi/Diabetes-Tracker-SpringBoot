@@ -1,10 +1,7 @@
 package com.diabetestracker.service;
 
-import com.diabetestracker.model.Diabetic;
-import com.diabetestracker.model.Exercice;
-import com.diabetestracker.model.Glycemie;
-import com.diabetestracker.model.Repas;
-import com.diabetestracker.model.Report;
+import com.diabetestracker.model.*;
+import com.diabetestracker.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +11,28 @@ import java.util.List;
 public class ReportService {
 
     @Autowired
-    private DiabeticService diabeticService;
+    private DiabeticRepository diabeticRepository;
 
     @Autowired
-    private GlycemieService glycemieService;
+    private GlycemieRepository glycemieRepository;
 
     @Autowired
-    private RepasService repasService;
+    private RepasRepository repasRepository;
 
     @Autowired
-    private ExerciceService exerciceService;
-    @Autowired
-    private ConseilService conseilService;
+    private ExerciceRepository exerciceRepository;
 
     public Report generateCustomReport(Long diabeticId) {
-        Report report = new Report();
-        Diabetic diabetic = diabeticService.getById(diabeticId);
-        report.setDiabetic(diabetic);
-        return report;
+        Diabetic diabetic = diabeticRepository.findById(diabeticId).orElse(null);
+        List<Glycemie> glycemiaReadings = glycemieRepository.findByDiabetic_Id(diabeticId);
+        List<Repas> meals = repasRepository.findByDiabetic_Id(diabeticId);
+        List<Exercice> exercises = exerciceRepository.findByDiabetic_Id(diabeticId);
+
+        return Report.builder()
+                .diabetic(diabetic)
+                .glycemiaReadings(glycemiaReadings)
+                .meals(meals)
+                .exercises(exercises)
+                .build();
     }
 }
