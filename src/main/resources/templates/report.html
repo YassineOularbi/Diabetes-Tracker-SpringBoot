@@ -192,8 +192,10 @@
             <table>
                 <thead>
                 <tr>
+                    <!--
                     <th>Date Time</th>
                     <th>Name</th>
+                    -->
                     <th>Duration (minutes)</th>
                     <th>Blood Sugar Before</th>
                     <th>Blood Sugar After</th>
@@ -202,8 +204,9 @@
                 </thead>
                 <tbody>
                 <tr th:each="program : ${report.programs}">
-                    <td th:text="${program.date}"></td>
+                   <!-- <td th:text="${program.date}"></td>
                     <td th:text="${program.name}"></td>
+                    -->
                     <td th:text="${program.duration}"></td>
                     <td th:text="${program.bloodSugarBefore}"></td>
                     <td th:text="${program.bloodSugarAfter}"></td>

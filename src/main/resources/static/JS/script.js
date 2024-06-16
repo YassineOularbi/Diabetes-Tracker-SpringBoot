@@ -26,7 +26,6 @@ $(document).ready(function () {
 });
 
 
-
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("submitButton").addEventListener("click", function (event) {
         if (!confirm('Are you sure you want to add this registration?')) {
@@ -35,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const imgDiv = document.getElementById("myMap");
 
     const modal = document.createElement("div");
@@ -81,18 +80,18 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementsByTagName('head')[0].appendChild(style);
 
     imgDiv.style.cursor = "pointer";
-    imgDiv.addEventListener("click", function() {
+    imgDiv.addEventListener("click", function () {
         modal.style.display = "block";
         modalImg.src = imgDiv.style.backgroundImage.slice(5, -2);
     });
 
-    closeBtn.addEventListener("click", function() {
+    closeBtn.addEventListener("click", function () {
         modal.style.display = "none";
     });
 });
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const textSection = document.querySelector('.text');
     textSection.style.opacity = 0;
     textSection.style.transform = 'translateY(50px)';
@@ -130,3 +129,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+    function toggleTable(tableId) {
+    var table = document.getElementById(tableId);
+    if (table.style.display === "none") {
+    table.style.display = "table";
+     } else {
+    table.style.display = "none";
+}
+}
