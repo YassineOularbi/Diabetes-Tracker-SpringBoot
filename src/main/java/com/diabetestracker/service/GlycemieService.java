@@ -43,7 +43,26 @@ public class GlycemieService {
     }
 
     public Glycemie getLatestGlycemie() {
+
         return glycemieRepository.findTopByOrderByDateDesc();
     }
+    public List<Glycemie> getAllGroupedByWeek() {
+        return GlycemieRepository.findAllGroupedByWeek();
+    }
 
+    public List<Glycemie> getAllGroupedByMonth() {
+        return GlycemieRepository.findAllGroupedByMonth();
+    }
+
+    public List<Glycemie> getAllGroupedByYear() {
+        return GlycemieRepository.findAllGroupedByYear();
+    }
+
+    public List<Glycemie> getByYearAndWeek(int year, int week) {
+        return GlycemieRepository.findByYearAndWeek(year, week);
+    }
+
+    public List<Glycemie> getByYearAndMonth(int year, int month) {
+        return GlycemieRepository.findByYearAndMonth(year, month);
+    }
 }

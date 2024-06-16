@@ -4,7 +4,6 @@ import com.diabetestracker.enums.Level;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +19,7 @@ public class Glycemie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Double value;
 
     @Enumerated(EnumType.STRING)
@@ -45,4 +45,7 @@ public class Glycemie {
         this.unit = unit;
     }
 
+    public Object getDateAndTime() {
+        return null;
+    }
 }

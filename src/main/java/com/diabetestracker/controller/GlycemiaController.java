@@ -1,17 +1,15 @@
 package com.diabetestracker.controller;
 
-import com.diabetestracker.model.Glycemie;
-import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.enums.Level;
 import com.diabetestracker.model.Conseil;
-
-import com.diabetestracker.service.GlycemieService;
-import com.diabetestracker.service.DiabeticService;
+import com.diabetestracker.model.Diabetic;
+import com.diabetestracker.model.Glycemie;
 import com.diabetestracker.service.ConseilService;
+import com.diabetestracker.service.DiabeticService;
+import com.diabetestracker.service.GlycemieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -19,11 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/glycemie")
@@ -74,18 +70,14 @@ public class GlycemiaController {
 
         glycemieService.saveGlycemie(glycemie);
         Optional<Conseil> conseil = conseilService.getConseilByLevel(level);
-        if (conseil.isPresent()) {
-            model.addAttribute("conseil", conseil.get());
-        } else {
-            model.addAttribute("conseil", new Conseil(level, level.getDefaultConseil()));
-        }
+        model.addAttribute("conseil", conseil.orElse(new Conseil(level, level.getDefaultConseil())));
         return "viewConseil";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteGlycemie(@PathVariable Long id) {
-        var diabetic = glycemieService.deleteGlycemieById(id);
-        return "redirect:/glycemie/glycemie/" + diabetic.getId();
+        Diabetic glycemie = glycemieService.deleteGlycemieById(id);
+        return "redirect:/glycemie/glycemie/" + glycemie.getDiabetic().getId();
     }
 
     @GetMapping("/glycemie/{id}")
@@ -100,15 +92,66 @@ public class GlycemiaController {
         }
     }
 
-
     @GetMapping("/conseil/{level}")
     public String getConseilByLevel(@PathVariable Level level, Model model) {
         Optional<Conseil> conseil = conseilService.getConseilByLevel(level);
-        if (conseil.isEmpty()) {
-            conseil = Optional.of(new Conseil(level, level.getDefaultConseil()));
-        }
-        model.addAttribute("conseil", conseil.get());
+        model.addAttribute("conseil", conseil.orElse(new Conseil(level, level.getDefaultConseil())));
         return "viewConseil";
     }
-}
 
+    @GetMapping("/chart")
+    public String chart(Model model) {
+        List<Glycemie> readings = glycemieService.getAllGlycemies();
+        List<String> labels = new ArrayList<>();
+        List<Integer> data = new ArrayList<>();
+
+        for (Glycemie reading : readings) {
+            labels.add(reading.getDate().toString());
+            data.add(reading.getLevel().ordinal()); // Assuming Level enum has an ordinal value
+        }
+
+        model.addAttribute("labels", labels);
+        model.addAttribute("data", data);
+        return "chart";
+    }
+
+    @GetMapping("/chartDisplay")
+    public String getGlucoseReadings(
+            @RequestParam(value = "view", required = false, defaultValue = "week") String view,
+            @RequestParam(value = "year", required = false) Integer year,
+            @RequestParam(value = "month", required = false) Integer month,
+            @RequestParam(value = "week", required = false) Integer week,
+            Model model) {
+
+        List<Glycemie> readings;
+
+        switch (view) {
+            case "month":
+                readings = glycemieService.getAllGroupedByMonth();
+                break;
+            case "year":
+                readings = glycemieService.getAllGroupedByYear();
+                break;
+            case "specificMonth":
+                readings = glycemieService.getByYearAndMonth(year, month);
+                break;
+            case "specificWeek":
+                readings = glycemieService.getByYearAndWeek(year, week);
+                break;
+            default:
+                readings = glycemieService.getAllGroupedByWeek();
+        }
+
+        List<String> labels = new ArrayList<>();
+        List<Integer> data = new ArrayList<>();
+
+        for (Glycemie reading : readings) {
+            labels.add(reading.getDate().toString());
+            data.add(reading.getLevel().ordinal()); // Assuming Level enum has an ordinal value
+        }
+
+        model.addAttribute("labels", labels);
+        model.addAttribute("data", data);
+        return "index";
+    }
+}

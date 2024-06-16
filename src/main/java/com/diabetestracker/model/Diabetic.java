@@ -1,13 +1,15 @@
 package com.diabetestracker.model;
+
 import com.diabetestracker.enums.DiabeticType;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.databind.deser.UnresolvedId;
 import lombok.*;
+
+import jakarta.persistence.*;
 
 import java.util.List;
 
-
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -16,9 +18,12 @@ public class Diabetic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     @Enumerated(EnumType.STRING)
     private DiabeticType type;
+
     private Integer age;
     private float weight;
     private float height;
@@ -30,12 +35,12 @@ public class Diabetic {
 
     @OneToMany(mappedBy = "diabetic", cascade = CascadeType.REMOVE)
     private List<Glycemie> glycemies;
-    public List<Glycemie> getAllGlycemies() {
 
+    public List<Glycemie> getAllGlycemies() {
         return this.glycemies;
     }
 
+    public UnresolvedId getDiabetic() {
+        return null;
+    }
 }
-
-
-
