@@ -4,9 +4,11 @@ import com.diabetestracker.enums.Level;
 import com.diabetestracker.model.Conseil;
 import com.diabetestracker.model.Diabetic;
 import com.diabetestracker.model.Glycemie;
+import com.diabetestracker.model.Repas;
 import com.diabetestracker.service.ConseilService;
 import com.diabetestracker.service.DiabeticService;
 import com.diabetestracker.service.GlycemieService;
+import com.diabetestracker.service.RepasService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class GlycemiaController {
 
     @Autowired
     private ConseilService conseilService;
+
+    @Autowired
+    private RepasService repasService;
 
     @GetMapping
     public String listGlycemies(ModelMap modelMap) throws JsonProcessingException {
@@ -88,14 +93,13 @@ public class GlycemiaController {
         return "redirect:/glycemie";
     }
 
-
-
     @GetMapping("/glycemie/{id}")
     public String viewGlycemies(@PathVariable Long id, Model model) {
         Diabetic diabetic = diabeticService.getDiabeticById(id);
         if (diabetic != null) {
             List<Glycemie> glycemies = diabetic.getAllGlycemies();
             model.addAttribute("listGlycemies", glycemies);
+            model.addAttribute("diabetic", diabetic);
             return "registrations";
         } else {
             return "redirect:/";
@@ -147,4 +151,25 @@ public class GlycemiaController {
 
         return "registrations";
     }
+
+//    @GetMapping("/byGlycemie/{glycemieId}")
+//    public String viewMealsByGlycemie(@PathVariable Long glycemieId, Model model) {
+//        Glycemie glycemie = glycemieService.getById(glycemieId);
+//        if (glycemie != null) {
+//            List<Repas> repasList = glycemie.getRepas();
+//            model.addAttribute("listRepas", repasList);
+//            return "registrations"; // Adjust the view name as necessary
+//        } else {
+//            return "redirect:/";
+//        }
+//    }
+@GetMapping("/byGlycemie/{glycemieId}")
+public String viewMealsByGlycemie(@PathVariable Long glycemieId, Model model) {
+    Glycemie glycemie = glycemieService.getById(glycemieId);
+        List<Repas> repasList = glycemie.getRepas();
+        model.addAttribute("listRepas", repasList);
+        return "listRepas";
+
+}
+
 }

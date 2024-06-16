@@ -27,6 +27,13 @@ public class RepasService {
                 .collect(Collectors.toList());
     }
 
+    public List<Repas> getRepasByGlycemieId(Long glycemieId) {
+        return repasRepository.findAll().stream()
+                .filter(r -> r.getGlycemie().getId().equals(glycemieId))
+                .collect(Collectors.toList());
+    }
+
     public void deleteRepasById(Long id) {
+        repasRepository.deleteById(id);
     }
 }

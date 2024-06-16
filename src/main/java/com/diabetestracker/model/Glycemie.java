@@ -37,6 +37,18 @@ public class Glycemie {
     @OneToMany(mappedBy = "glycemie")
     @ToString.Exclude
     private List<Program> program;
+    @OneToMany(mappedBy = "glycemie")
+    private List<Repas> repas;
+
+    // Getters and setters
+
+    public List<Repas> getRepas() {
+        return repas;
+    }
+
+    public void setRepas(List<Repas> repas) {
+        this.repas = repas;
+    }
 
     public Glycemie(Double value, LocalDateTime date, Level level, String unit) {
         this.value = value;
