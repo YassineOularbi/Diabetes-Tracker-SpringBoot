@@ -4,8 +4,7 @@
     <!--
       - custom css link
     -->
-    <style th:replace="fragments/style :: style"></style>
-    <link rel="stylesheet" href="./CSS/style2.css">
+    <link rel="stylesheet" href="/CSS/style2.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -66,6 +65,10 @@
         #home .section__container {
             animation: fadeInUp 0.5s ease forwards;
         }
+
+
+
+
 
         .btn {
             display: inline-block;
@@ -342,70 +345,131 @@
     </style>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
-<!-- Main content of the page -->
-<main>
-    <div class="container">
-        <section id="home">
-            <div class="section__container">
-                <h2>Welcome to Our Home Page</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
-            </div>
-        </section>
-        <section id="services">
-            <div class="section__container">
-                <h2>Our Services</h2>
-                <div class="service-cards">
-                    <div class="card1">
-                        <img th:src="@{/images/services/service1.jpg}" alt="Service 1">
-                        <h3>Service 1</h3>
-                        <p>Details about Service 1.</p>
-                    </div>
-                    <div class="card1">
-                        <img th:src="@{/images/services/service2.jpg}" alt="Service 2">
-                        <h3>Service 2</h3>
-                        <p>Details about Service 2.</p>
-                    </div>
-                    <div class="card1">
-                        <img th:src="@{/images/services/service3.jpg}" alt="Service 3">
-                        <h3>Service 3</h3>
-                        <p>Details about Service 3.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="why-choose-us">
-            <div class="why-choose-us">
-                <h2>Why Choose Us</h2>
-                <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.</p>
-                <div class="features">
-                    <div class="feature">
-                        <div class="icon">
-                            <img th:src="@{/images/icons/feature1.png}" alt="Feature 1">
-                        </div>
-                        <h3>Feature 1</h3>
-                        <p>Description of Feature 1.</p>
-                    </div>
-                    <div class="feature">
-                        <div class="icon">
-                            <img th:src="@{/images/icons/feature2.png}" alt="Feature 2">
-                        </div>
-                        <h3>Feature 2</h3>
-                        <p>Description of Feature 2.</p>
-                    </div>
-                    <div class="feature">
-                        <div class="icon">
-                            <img th:src="@{/images/icons/feature3.png}" alt="Feature 3">
-                        </div>
-                        <h3>Feature 3</h3>
-                        <p>Description of Feature 3.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<div id="hey">
+    <div class="contact-info">
+        <div>📞 1234-5678-9012</div>
+        <div>📧 Health@diabets.com</div>
+        <div>🕒 Mon - Sun </div>
     </div>
-</main>
-<div th:replace="fragments/footer :: footer"></div>
+</div>
+<nav>
+    <div class="nav__bar">
+        <div class="nav__header">
+            <div class="logo nav__logo">
+                <img src="https://i.pinimg.com/564x/25/dc/47/25dc4724f96ecead1872f71ec2b4c57d.jpg" alt="ConstructionExpert Logo" style="max-width: 160px; height: 56px;">
+            </div>
+        </div>
+        <ul class="nav__links" id="nav-links">
+            <li ><a href="${pageContext.request.contextPath}/">Home</a></li>
+            <li ><a href="#">About</a></li>
+            <li ><a href="${pageContext.request.contextPath}/glycemie">Glycemies</a></li>
+            <li><a  href="${pageContext.request.contextPath}/new">New Glycemie</a></li>
+            <li><a  href="${pageContext.request.contextPath}/contact">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+<section class="slider">
+    <div class="hero-slider">
+        <div class="single-slider" style="background-image:url('https://www.ctvnews.ca/content/dam/ctvnews/en/images/2019/6/26/doctor-medical-stock-1-4484029-1674495685224.jpg'); height: 60vh;margin-top: -70px">
+        </div>
+    </div>
+</section>
+<!-- End Breadcrumbs -->
+
+<!-- Start Contact Us -->
+<section class="contact-us section">
+    <div class="container">
+        <div class="inner">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="contact-us-left">
+                        <div id="myMap" style="background-image:url('https://blog.pascal-martin.fr/public/google-maps/4/carte-ex6-zoom-loin-metro.png');background-size: cover ; background-position: center"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="contact-us-form">
+                        <h2>Contact With Us</h2>
+                        <p>If you have any questions please fell free to contact with us.</p>
+                        <!-- Form -->
+                        <form class="form">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" name="name" placeholder="Name" required="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="email" name="email" placeholder="Email" required="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" name="phone" placeholder="Phone" required="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" name="subject" placeholder="Subject" required="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <textarea name="message" placeholder="Your Message" required=""></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group login-btn">
+                                        <button class="btn" type="submit">Send</button>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">Do you want to subscribe our Newsletter ?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--/ End Form -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contact-info">
+            <div class="row">
+                <!-- single-info -->
+                <div class="col-lg-4 col-12 ">
+                    <div class="single-info">
+                        <i class="icofont icofont-ui-call"></i>
+                        <div class="content">
+                            <h3>+(000) 1234 56789</h3>
+                            <p>health@diabets.com</p>
+                        </div>
+                    </div>
+                </div>
+                <!--/End single-info -->
+                <!-- single-info -->
+                <div class="col-lg-4 col-12 ">
+                    <div class="single-info">
+                        <i class="icofont-google-map"></i>
+                        <div class="content">
+                            <h3>hyuhy</h3>
+                            <p>hyu,huooop</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12 ">
+                    <div class="single-info">
+                        <i class="icofont icofont-wall-clock"></i>
+                        <div class="content">
+                            <h3>Mon - Sun </h3>
+                            <p>Always with you !</p>
+                        </div>
+                    </div>
+                </div>
+                <!--/End single-info -->
+            </div>
+        </div>
+    </div>
+</section>
 <footer id="footer" class="footer ">
     <!-- Footer Top -->
     <div class="footer-top">

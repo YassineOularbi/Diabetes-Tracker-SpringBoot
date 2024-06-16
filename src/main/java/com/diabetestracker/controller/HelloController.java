@@ -11,12 +11,11 @@ public class HelloController {
 //        modelMap.addAttribute("message",
 //                "Hello World and Welcome to Spring MVC!");
 
-        return "Home"; // Renommez la vue 'Home' si nécessaire.
+        return "Home";
     }
     @RequestMapping(value = "/contact", method = RequestMethod.GET)
-    public String print(ModelMap modelMap){
-//        modelMap.addAttribute("message",
-//                "Hello World and Welcome to Spring MVC!");
+    public String printContact(ModelMap modelMap){
+
 
         return "Contact";
     }
